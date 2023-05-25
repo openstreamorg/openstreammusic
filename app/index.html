@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>OpenStream Music</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+  <nav>
+    <div class="logo">
+      <img src="./images/logo.png" alt="OpenStream Music" />
+    </div>
+    <div class="search">
+      <input type="text" id="search-input" placeholder="Search the whole song library" />
+    </div>
+  </nav>
+  <br>
+  <br>
+  <br>
+  <h1 id="page-title" style="font-weight:bold;"></h1>
+  <div id="songs-list"></div>
+  <div id="box-shadow">
+    <div id="custom-player">
+      <div id="player-controls">
+        <div id="song-info">
+          <div id="song-name">You haven't chosen a song to play</div>
+          <div id="artist-name">Choose a song and it will show up here.</div>
+        </div>
+      </div>
+      <audio id="audio-player" src=""></audio>
+      <div id="player-song-info">
+        <img id="player-album-cover" src="" />
+        <div>
+          <div id="player-song-name"></div>
+          <div id="player-artist-name"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="playlist"></div>
+  <script src="./renderer.js"></script>
+  <script src="./playlist.js"></script>
+</body>
+
+</html>
