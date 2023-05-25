@@ -51,7 +51,7 @@ OpenStream Music is an open-source project hosted on GitHub. If you are interest
 
 ## License
 
-OpenStream Music is released under the [GPL v2 License](https://github.com/openstreamorg/openstreamorg.github.io/blob/main/LICENSE).
+OpenStream Music is released under the [GPL v2 License](https://github.com/openstreamorg/openstreammusic/blob/main/LICENSE).
 
 We hope you enjoy using OpenStream Music and have a fantastic music streaming experience!
 
