@@ -20,9 +20,7 @@ jobs:
 
       - name: Move app directory contents
         run: |
-          mv app/* .
-          mv app/.* .
-          rmdir app
+          cp -R app/. .
 
       - name: Install dependencies
         run: npm install --force --legacy-peer-deps
