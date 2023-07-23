@@ -22,7 +22,7 @@ jobs:
         run: npm install --force --legacy-peer-deps
 
       - name: Install electron-builder
-        run: npm install electron-builder
+        run: cd app & npm install electron-builder
 
       - name: Build macOS package
         run: npx electron-builder -m --dmg --x64
