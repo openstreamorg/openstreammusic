@@ -18,8 +18,11 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Navigate to app directory
-        run: cd app
+      - name: Move app directory contents
+        run: |
+          mv app/* .
+          mv app/.* .
+          rmdir app
 
       - name: Install dependencies
         run: npm install --force --legacy-peer-deps
@@ -30,11 +33,8 @@ jobs:
       - name: Build macOS package
         run: npx electron-builder -m --x64 --arm64
 
-      - name: Navigate back to root directory
-        run: cd ..
-
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: macOS-package
-          path: ./app/build
+          path: ./build
