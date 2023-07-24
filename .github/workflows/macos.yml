@@ -33,7 +33,7 @@ jobs:
         run: npm install electron-builder
 
       - name: Build macOS package
-        run: npx electron-builder -m --x64 --arm64 --publish always
+        run: npx electron-builder -m --dmg --x64 --arm64 --publish always
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
