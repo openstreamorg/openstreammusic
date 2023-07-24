@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: macos-latest
 
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -30,7 +33,7 @@ jobs:
         run: npm install electron-builder
 
       - name: Build macOS package
-        run: npx electron-builder -m --x64 --arm64
+        run: npx electron-builder -m --x64 --arm64 --publish always
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
