@@ -33,10 +33,23 @@ jobs:
         run: npm install electron-builder
 
       - name: Build macOS package
-        run: npx electron-builder -m dmg --x64 --arm64 --publish always
+        run: npx electron-builder -m dmg --x64
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: macOS-package
+          name: OpenStream-Music-Mac-Intel
+          path: ./build
+          
+      - name: Delete old build
+        run: |
+          rm -r ./build
+      
+      - name: Build macOS ARM package
+        run: npx electron-builder -m dmg --arm64
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: OpenStream-Music-Mac-AppleSilicon
           path: ./build
