@@ -1,0 +1,55 @@
+name: Build macOS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Move app directory contents
+        run: |
+          cp -R app/. .
+          rm -r app/package.json
+
+      - name: Install dependencies
+        run: npm install --force --legacy-peer-deps
+
+      - name: Install electron-builder
+        run: npm install electron-builder
+
+      - name: Build macOS package
+        run: npx electron-builder -m dmg --x64
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: OpenStream-Music-Mac-Intel
+          path: ./build
+          
+      - name: Delete old build
+        run: |
+          rm -r ./build
+      
+      - name: Build macOS ARM package
+        run: npx electron-builder -m dmg --arm64
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: OpenStream-Music-Mac-AppleSilicon
+          path: ./build
