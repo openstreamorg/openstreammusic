@@ -331,6 +331,7 @@ nav {
   }
   .song img {width:40px; height:40px;
             }
+  .song .cover{width:40px;height:40px;}
   .song br {height:0px;}
 
   /* #song-info {padding-left:700px;}
