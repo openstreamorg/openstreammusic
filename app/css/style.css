@@ -333,9 +333,10 @@ nav {
             }
   .song .cover{width:40px;height:40px;}
   .song br {height:0px;}
-
-  /* #song-info {padding-left:700px;}
-    #player-album-cover {padding-left:700px;} */
+  #custom-player {height:80px;}
+    #player-album-cover {padding-left:10px;padding-top:45px;width:40px;height:40px;} 
+  #song-name{padding-top:50px;padding-left: 60px;}
+  #artist-name{padding-top:65px;padding-left:60px;}
 }
 
 @media only screen and (min-width: 1200px) {
