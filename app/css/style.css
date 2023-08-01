@@ -1,4 +1,6 @@
 /* navbar */
+/*button{background-color:lightgrey;border:none;}
+*/
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 * {  -webkit-user-select: none; /* Safari */
@@ -8,12 +10,15 @@
 .navbar {
   margin: 0;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem;
+  /*justify-content: space-between;
+  padding: 0.5rem;*/
   background-color: #1db954;
   position: fixed;
   top: 0;
   color: #fff;
+}
+body {
+  overflow-x: hidden;
 }
 
 * {
@@ -60,7 +65,7 @@
 
 /* songs list */
 #songs-list {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
 nav {
@@ -214,7 +219,7 @@ nav {
   flex-direction: column;
   justify-content: center;
   text-align: left;
-  padding-left: 350px;
+  padding-left: 325px;
   background-color: rgba(255, 255, 255, 0.8);
   z-index: 1;
 }
@@ -230,7 +235,7 @@ nav {
 
 #player-album-cover {
   width: 60px;
-  margin-left: 360px;
+  margin-left: 340px;
   z-index: -1;
   padding-top: 0px;
   border-radius:10px;
@@ -350,6 +355,7 @@ nav {
 }
 
 #page-title {
+  margin-top:45px;
   margin-left: 10px;
 }
 img {
@@ -398,3 +404,106 @@ img {
 #playlist ul li:hover {
   background-color: #e6e6e6;
 }
+
+/* Existing styles... */
+
+/* Dark theme */
+.dark-theme {
+  background-color: #151515;
+  color: #fff;
+}
+
+.dark-theme nav {
+  background-color: #111;
+}
+
+.dark-theme .search-bar input[type="text"] {
+  background-color: #111;
+  color: #fff;
+}
+.dark-theme .search-bar {
+  background-color: #111;
+  color: #fff;
+}
+
+.dark-theme #song-info, 
+.dark-theme #player-album-cover
+{ background-color:#111; color:#fff; }
+
+.dark-theme #custom-player, .dark-theme #player-song-info,
+.dark-theme #song-info  {background-color:#eee;color:#111;}
+
+.dark-theme .song:hover {
+  background-color: #222;
+}
+.dark-theme #custom-player {filter:invert(100%);}
+.dark-theme #player-album-cover {filter:invert(100%);}
+.dark-theme #search-input { background-color: #151515; color:white; }
+#settings-button {color:white;}
+.dark-theme #settings-button {color:black;}
+
+.theme-toggle { margin:auto; margin-right:10px; }
+
+/* Track */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.dark-theme ::-webkit-scrollbar-thumb:hover {
+  background-color: #222;
+}
+
+/* Track on hover */
+::-webkit-scrollbar-track:hover {
+  background-color: #f1f1f1;
+}
+
+.dark-theme ::-webkit-scrollbar-track:hover {
+  background-color: #222;
+}
+
+/* Track when scrollbar is active */
+::-webkit-scrollbar-track:active {
+  background-color: #ccc;
+}
+
+.dark-theme ::-webkit-scrollbar-track:active {
+  background-color: #222;
+}
+
+
+/* Corner */
+::-webkit-scrollbar-corner {
+  background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: #222;
+}
+
+.dark-theme .right-click-menu {
+  background-color:#000000;
+  box-shadow: -5px 5px 10px #ffffff59;
+}
+.right-click-menu button {
+  background-color:#000000;
+  color:white;
+}
+.right-click-menu button:hover {
+  background-color:#090909;
+}
+#save-settings-button { border:none; border-radius:10px; padding:5px 16px; margin-bottom:7px;margin-top:7px;background-color:#f2f2f2;color:black;}
+#save-settings-button:hover {background-color:#e0e0e0;}
+.dark-theme #save-settings-button {background-color:#0e0e0e;color:white;}
+.dark-theme #save-settings-button:hover {background-color:#090909;}
