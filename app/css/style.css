@@ -320,16 +320,16 @@ nav {
     height: 30px;
     width: 48%;
   }
-  .cover {height:28px;}
 
   /* #song-info {padding-left:700px;}
     #player-album-cover {padding-left:700px;} */
 }
 @media only screen and (max-width: 600px) {
   .song {
-    height: 30px;
+    height: 50px;
     width: 96%;
   }
+  .cover {height:40px;}
 
   /* #song-info {padding-left:700px;}
     #player-album-cover {padding-left:700px;} */
