@@ -317,8 +317,18 @@ nav {
 
 @media only screen and (max-width: 1200px) {
   .song {
-    height: 130px;
+    height: 30px;
     width: 48%;
+  }
+  .cover {height:28px;}
+
+  /* #song-info {padding-left:700px;}
+    #player-album-cover {padding-left:700px;} */
+}
+@media only screen and (max-width: 600px) {
+  .song {
+    height: 30px;
+    width: 96%;
   }
 
   /* #song-info {padding-left:700px;}
