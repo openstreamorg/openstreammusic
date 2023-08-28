@@ -159,7 +159,7 @@ function title() {
   }
 }
 
-fetch("https://openstreamorg.github.io/openstreammusic/web/songs.json")
+fetch("./songs.json")
   .then((response) => response.json())
   .then((data) => {
     allSongs = data.songs;
