@@ -1,0 +1,35 @@
+{
+  "name": "openstreammusic",
+  "version": "1.1.0",
+  "description": "Freeing the world of freemium streaming services.",
+  "main": "main.js",
+  "homepage": "https://openstreamorg.github.io",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "author": "OpenStream <88870951+techguy16@users.noreply.github.com>",
+  "license": "GPL-2.0",
+  "build": {
+    "appId": "org.openstream.music",
+    "productName": "OpenStream Music",
+    "directories": {
+      "output": "build"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "images/logo.ico"
+    },
+    "linux": {
+      "category": "Audio",
+      "target": "AppImage",
+      "icon": "images/logo.png"
+    }
+  },  
+  "devDependencies": {
+    "electron": "^16.0.0",
+    "electron-builder": "^23.6.0",
+    "electron-is-dev": "^2.0.0",
+    "node-fetch": "^3.3.1"
+  }
+}
