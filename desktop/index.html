@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>OpenStream Music</title>
+  <link rel="stylesheet" href="./css/style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"></script>
+
+  <style>
+    /* Rest of your CSS styles */
+
+    /* ... */
+
+    /* Navbar styling */
+    #settings-button 
+    {
+      border-radius: 10px;
+      position: absolute;
+      right:30px;
+      height:50px;
+      background-color:#ffffff00;
+      color:white;
+      border:none;
+      font-size:45px;
+      display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: inherit;
+    }
+
+    #settings-button:hover
+    {
+      background-color:#ffffff30;
+    }
+    .dark-theme #settings-button:hover
+    {
+      background-color:#00000030;
+    }
+
+    .dark-theme #settings-button 
+    {
+      color:white;
+    }
+
+    .navbar-settings {
+      margin:auto;
+      margin-top:85px;
+      width:200px;
+      margin-right:5px;
+      border-radius: 10px;
+    }
+
+    .dark-theme .navbar-settings .dropdown-menu {
+      display: none;
+      margin:auto;
+      padding: 8px;
+      background-color: #222;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+
+    .navbar-settings .dropdown-menu {
+      display: none;
+      border-radius: 10px;
+      margin:auto;
+      padding: 8px;
+      background-color: #f9f9f9;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar-settings:hover .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown-menu label {
+      display: block;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="logo">
+      <img src="./images/logo.png" alt="OpenStream Music" />
+    </div>
+    <div class="search">
+      <input type="text" id="search-input" placeholder="Search the whole song library" />
+    </div>
+    <button id="settings-button">⚙</button>
+    <div class="navbar-settings">
+      <div class="dropdown-menu" id="settings-dropdown">
+        <h3>Settings</h3>
+        <h4>Theme</h4>
+        <div>
+          <label>
+            <input type="radio" name="theme" value="light" checked> Light Theme
+          </label>
+          <label>
+            <input type="radio" name="theme" value="dark"> Dark Theme
+          </label>
+        </div>
+        <button id="save-settings-button">Save</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="search">
+      <input type="text" id="search-input" placeholder="Search the whole song library" />
+    </div>
+
+    <h1 id="page-title" style="font-weight:bold;"></h1>
+    <div id="songs-list"></div>
+    <div id="box-shadow">
+      <div id="custom-player">
+        <div id="player-controls">
+          <div id="song-info">
+            <div id="song-name">You haven't chosen a song to play</div>
+            <div id="artist-name">Choose a song and it will show up here.</div>
+          </div>
+        </div>
+        <audio id="audio-player" src=""></audio>
+        <div id="player-song-info">
+          <img id="player-album-cover" src="" />
+          <div>
+            <div id="player-song-name"></div>
+            <div id="player-artist-name"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="playlist"></div>
+  </main>
+
+  <script src="./renderer.js"></script>
+  <script src="./playlist.js"></script>
+  <script>
+    const themeToggleRadios = document.querySelectorAll("input[name='theme']");
+    const body = document.body;
+
+    // Check if the user previously set the dark theme
+    const isDarkThemeEnabled = localStorage.getItem("darkThemeEnabled");
+
+    if (isDarkThemeEnabled === "true") {
+      themeToggleRadios[1].checked = true;
+      body.classList.add("dark-theme");
+    } else {
+      themeToggleRadios[0].checked = true;
+    }
+
+    function updateTheme() {
+      if (themeToggleRadios[1].checked) {
+        body.classList.add("dark-theme");
+        localStorage.setItem("darkThemeEnabled", "true");
+      } else {
+        body.classList.remove("dark-theme");
+        localStorage.setItem("darkThemeEnabled", "false");
+      }
+    }
+
+    for (const radio of themeToggleRadios) {
+      radio.addEventListener("change", updateTheme);
+    }
+
+    const settingsButton = document.getElementById("settings-button");
+    const settingsDropdown = document.getElementById("settings-dropdown");
+    const saveSettingsButton = document.getElementById("save-settings-button");
+
+    settingsButton.addEventListener("click", function () {
+      settingsDropdown.style.display = "block";
+    });
+
+    saveSettingsButton.addEventListener("click", function () {
+      updateTheme();
+
+      // Hide the settings dropdown
+      settingsDropdown.style.display = "none";
+    });
+  </script>
+</body>
+
+</html>
