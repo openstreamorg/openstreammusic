@@ -1,8 +1,20 @@
-// create and append song elements to the DOM
+// Import the YouTube Music API module
+const YoutubeMusicApi = require('youtube-music-api');
+const api = new YoutubeMusicApi();
+const fs = require('fs');
+const ytdl = require('ytdl-core');
+
+function donothing() {
+    //
+}
+function wait(waitsecs) {
+    setTimeout(donothing(), 'waitsecs');
+}
+
+// Existing code for playing and displaying songs
 let allSongs = [];
 let currentlyPlaying = null;
 let audioPlayerEl = document.getElementById("custom-player");
-
 audioPlayerEl.addEventListener("ended", function () {
   currentlyPlaying.pause();
   currentlyPlaying.classList.remove("playing");
@@ -23,11 +35,15 @@ audioPlayerEl.addEventListener("ended", function () {
 });
 
 function showSongs(songs) {
-  const searchInput2 = document.getElementById("search-input").value.trim();
   const songsList = document.getElementById("songs-list");
   songsList.innerHTML = "";
   title();
-  if (!songs || searchInput2.length === 0) {
+
+  // Initialize searchInput before using it
+  const searchInput = document.getElementById("search-input");
+  const searchInputValue = searchInput.value.trim();
+
+  if (!songs || searchInputValue.length === 0) {
     const shuffledSongs = shuffleArray(allSongs);
     songs = shuffledSongs.slice(0, 15);
   }
@@ -70,6 +86,7 @@ function showSongs(songs) {
       customPlayer.pause();
       customPlayer.currentTime = 0;
       customPlayer.src = song.mp3Url;
+      console.log(song.mp3Url);
       customPlayer.play();
       currentlyPlaying = customPlayer;
 
@@ -83,10 +100,10 @@ function showSongs(songs) {
 
     songDiv.addEventListener("contextmenu", function (event) {
       event.preventDefault();
-    
+
       const menu = document.createElement("div");
       menu.classList.add("right-click-menu");
-    
+
       const playButton = document.createElement("button");
       playButton.innerText = "▶\t\t\tPlay";
       playButton.addEventListener("click", function () {
@@ -108,26 +125,25 @@ function showSongs(songs) {
       addToPlaylistButton.innerText = "Add to Playlist";
       addToPlaylistButton.addEventListener("click", function () {
         addToPlaylist(song);
-    
+
         menu.remove();
       });
-    
+
       menu.style.position = "fixed";
       menu.style.top = event.clientY + "px";
       menu.style.left = event.clientX + "px";
-    
+
       document.body.appendChild(menu);
-    
+
       const removeMenu = function () {
         menu.remove();
         window.removeEventListener("click", removeMenu);
       };
       window.addEventListener("click", removeMenu);
     });
-    
+
   });
 
-  const searchInput = document.getElementById("search-input");
   searchInput.addEventListener("input", function (event) {
     const filteredSongs = allSongs.filter((song) => {
       const songName = song.name.toLowerCase();
@@ -137,7 +153,6 @@ function showSongs(songs) {
     showSongs(filteredSongs);
     title();
   });
-
 }
 
 function shuffleArray(array) {
@@ -159,6 +174,57 @@ function title() {
   }
 }
 
+function getUrl(id) {
+    let filename = id + ".mp3";
+    let url = "http://www.youtube.com/watch?v=" + id;
+    ytdl(url, { filter: audioonly => format.container === 'mp3' }).pipe(fs.createWriteStream(filename));
+    return filename;
+}
+api.initalize().then(info => {
+  // API is initialized and ready to use
+  // You can now use the YouTube Music API within your search function
+
+  // Implement the search function
+  function searchMusic(query) {
+    // Use the YouTube Music API to search for music based on the query
+    api.search(query)
+      .then(results => {
+        // Process the search results and display them on the page
+        const songs = results.content
+          .filter(item => item.type === 'song') // Filter out only song items
+          .map(item => {
+            console.log(item.videoId);
+            return {
+              name: item.name,
+              artist: item.artist.name,
+              coverUrl: item.thumbnails[1].url,
+              mp3Url: getUrl(item.videoId) // You need to map this correctly
+            };
+          });
+
+        // Call the showSongs function with the search results
+        showSongs(songs);
+      })
+      .catch(error => {
+        console.error("Error searching music:", error);
+      });
+  }
+
+  // Attach the search functionality to the input event of the search input field
+  const searchInput = document.getElementById("search-input");
+  searchInput.addEventListener("input", function (event) {
+    const searchQuery = event.target.value.trim();
+    if (searchQuery.length > 0) {
+      searchMusic(searchQuery);
+    } else {
+      // If the search input is empty, show all songs
+      showSongs(allSongs);
+    }
+  });
+}).catch(error => {
+  console.error("Error initializing YouTube Music API:", error);
+});
+
 fetch("https://raw.githubusercontent.com/openstreamorg/openstreammusic-data/main/songs.json")
   .then((response) => response.json())
   .then((data) => {
@@ -167,7 +233,7 @@ fetch("https://raw.githubusercontent.com/openstreamorg/openstreammusic-data/main
       const audio = new Audio(song.mp3Url);
       audio.preload = "auto";
     });
-    showSongs();
+    showSongs(allSongs); // Call showSongs with the original JSON data
   });
 
 const customPlayerDiv = document.createElement("div");
@@ -203,3 +269,4 @@ function updateSongInfo(song) {
 function addToPlaylist(song) {
   window.api.send("add-to-playlist", song);
 }
+

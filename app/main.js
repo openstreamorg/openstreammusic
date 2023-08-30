@@ -2,6 +2,8 @@ const { app, BrowserWindow, ipcMain, Menu } = require("electron");
 const path = require("path");
 const url = require("url");
 const https = require("https");
+const YoutubeMusicApi = require('youtube-music-api');
+const api = new YoutubeMusicApi();
 
 let mainWindow;
 
@@ -18,7 +20,7 @@ function createWindow() {
     },
   });
 
-  Menu.setApplicationMenu(null);
+  // Menu.setApplicationMenu(null);
 
   mainWindow.loadURL(
     url.format({
