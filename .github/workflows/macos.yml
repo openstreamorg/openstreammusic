@@ -23,8 +23,8 @@ jobs:
 
       - name: Move app directory contents
         run: |
-          cp -R app/. .
-          rm -r app/package.json
+          cp -R desktop/. .
+          rm -r desktop/package.json
 
       - name: Install dependencies
         run: npm install --force --legacy-peer-deps
