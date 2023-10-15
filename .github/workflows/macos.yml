@@ -22,29 +22,38 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
-        run: npm install --force --legacy-peer-deps
+        run: |
+          cd desktop
+          npm install --force --legacy-peer-deps
 
       - name: Install electron-builder
-        run: npm install electron-builder
+        run: |
+          cd desktop
+          npm install electron-builder
 
       - name: Build macOS package
-        run: npx electron-builder -m dmg --x64
+        run: |
+          cd desktop
+          npx electron-builder -m dmg --x64
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: OpenStream-Music-Mac-Intel
-          path: ./build
+          path: ./desktop/build
           
       - name: Delete old build
         run: |
+          cd desktop
           rm -r ./build
       
       - name: Build macOS ARM package
-        run: npx electron-builder -m dmg --arm64
+        run: |
+          cd desktop
+          npx electron-builder -m dmg --arm64
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: OpenStream-Music-Mac-AppleSilicon
-          path: ./build
+          path: ./desktop/build
