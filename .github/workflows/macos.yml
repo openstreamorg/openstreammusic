@@ -21,11 +21,6 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Move app directory contents
-        run: |
-          cp -R desktop/. .
-          rm -r desktop/package.json
-
       - name: Install dependencies
         run: npm install --force --legacy-peer-deps
 
