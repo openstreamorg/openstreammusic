@@ -17,13 +17,11 @@
             "output": "build"
         },
         "win": {
-            "target": "nsis",
-            "icon": "images/logo.ico"
+            "target": "nsis"
         },
         "linux": {
-            "category": "Audio",
-            "target": "AppImage",
-            "icon": "images/logo.png"
+            "category": "AudioVideo",
+            "target": "AppImage"
         }
     },
     "devDependencies": {

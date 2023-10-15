@@ -4,7 +4,17 @@ const api = new YoutubeMusicApi();
 const fs = require('fs');
 const ytdl = require('ytdl-core');
 
+let songQueue = [];
+
 hideLoadingAnimation();
+
+function donothing() {
+    // nothing
+}
+
+function wait(waitsecs) {
+    setTimeout(donothing(), 'waitsecs');
+}
 
 function updateOnlineStatus() {
     if (navigator.onLine) {
@@ -52,10 +62,6 @@ function hideLoadingAnimation() {
     songsList.style.display = "flex";
     titleEl.style.display = "block";
     loadingContainer.style.display = "none";
-}
-
-function wait(waitsecs) {
-    setTimeout(donothing(), 'waitsecs');
 }
 
 // Existing code for playing and displaying songs
@@ -167,6 +173,15 @@ function showSongs(songs) {
             });
 
             menu.appendChild(playButton);
+            const playNextButton = document.createElement("button");
+            playNextButton.innerText = "☰\t\t\tAdd to Queue";
+            playNextButton.addEventListener("click", function() {
+                songQueue.push(song);
+                menu.remove();
+            });
+
+            menu.appendChild(playNextButton);
+
             const breakx = document.createElement("br");
             menu.appendChild(breakx);
             const addToPlaylistButton = document.createElement("button");
@@ -296,16 +311,26 @@ customPlayerDiv.appendChild(customPlayer);
 document.body.appendChild(customPlayerDiv);
 
 customPlayer.addEventListener("ended", function() {
-    const shuffledSongs = shuffleArray(allSongs);
-    const randomSong = shuffledSongs[0];
-    customPlayer.src = randomSong.mp3Url;
-    customPlayer.play();
-    updateSongInfo({
-        coverUrl: randomSong.coverUrl,
-        name: randomSong.name,
-        artist: randomSong.artist,
-    });
+    if (songQueue.length > 0) {
+        const nextSong = songQueue.shift(); // Get the next song from the queue
+        customPlayer.src = nextSong.mp3Url;
+        customPlayer.play();
+        currentlyPlaying = customPlayer;
+        updateSongInfo(nextSong);
+    } else {
+        // If the queue is empty, you can handle it as needed (e.g., shuffle and play a random song).
+        const shuffledSongs = shuffleArray(allSongs);
+        const randomSong = shuffledSongs[0];
+        customPlayer.src = randomSong.mp3Url;
+        customPlayer.play();
+        updateSongInfo({
+            coverUrl: randomSong.coverUrl,
+            name: randomSong.name,
+            artist: randomSong.artist,
+        });
+    }
 });
+
 
 function updateSongInfo(song) {
     const songName = document.getElementById("song-name");

@@ -40,9 +40,8 @@
         
         .navbar-settings {
             margin: auto;
-            margin-top: 85px;
-            width: 200px;
-            margin-right: 5px;
+            width: 100%;
+            margin-top: 10px;
             border-radius: 10px;
         }
         
@@ -50,8 +49,6 @@
             display: none;
             margin: auto;
             padding: 8px;
-            background-color: #222;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             border-radius: 10px;
         }
         
@@ -60,8 +57,6 @@
             border-radius: 10px;
             margin: auto;
             padding: 8px;
-            background-color: #f9f9f9;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
         }
         
         .navbar-settings:hover .dropdown-menu {
@@ -138,11 +133,67 @@
             margin-top: 10%;
             text-align: center;
         }
+        
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+        }
+        /* Change background color of buttons on hover */
+        
+        .tab button:hover {
+            background-color: #ddd;
+        }
+        /* Create an active/current tablink class */
+        
+        .tab button.active {
+            background-color: #ccc;
+        }
+        /* Style the tab content */
+        
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border-top: none;
+            background-color: white;
+            color: black;
+        }
+        
+        .tabcontent {
+            animation: fadeEffect 1s;
+            /* Fading effect takes 1 second */
+        }
+        /* Go from zero to full opacity */
+        
+        .tablinks {
+            float: right;
+            background-color: #fff;
+            padding: 9px 13px;
+            border-radius: 10px;
+            border: 1px solid black;
+        }
+        
+        .tablinks:hover {
+            background-color: #aaa;
+        }
+        
+        @keyframes fadeEffect {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <nav>
+    <nav id="nav">
         <div class="logo">
             <img src="./images/logo.png" alt="OpenStream Music" />
         </div>
@@ -150,7 +201,8 @@
             <input type="text" id="search-input" placeholder="Search the whole song library" />
         </div>
         <button id="settings-button">⚙</button>
-        <div class="navbar-settings">
+        <!--<div class="navbar-settings">
+            
             <div class="dropdown-menu" id="settings-dropdown">
                 <h3>Settings</h3>
                 <h4>Theme</h4>
@@ -164,11 +216,12 @@
                 </div>
                 <button id="save-settings-button">Save</button>
             </div>
-        </div>
+        </div>-->
     </nav>
 
+
     <main>
-        <div class="search">
+        <div class="search" id="search">
             <input type="text" id="search-input" placeholder="Search the whole song library" />
         </div>
         <div id="offline-status">
@@ -181,6 +234,43 @@
             <p>Searching...</p>
             <span class="loader"></span>
         </div>
+
+        <div id="first-run-div" style="display: none; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(238deg, #fd8800aa, #fd008faa, #9700fdaa, #003dfdaa, #05c7e6aa, #4bd58daa); background-size: 300% 300%; -webkit-animation: rainbow 30s ease infinite; animation: rainbow 30s ease infinite;">
+            <!-- Content for the first run div goes here -->
+            <div id="main-firstrun" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; text-align: center; background: white; border-radius: 15px;padding-top:20px;padding-bottom:20px;opacity:1;">
+                <!--<h1>Welcome to OpenStream Music</h1>
+                <p>We're on a mission to free the world from proprietary streaming services.</p>
+                <p>By using OpenStream Music, you support open source software and freedom.</p>
+                <p>Are you ready? Let's go!</p>
+                <button id="lets-go-button">Start</button>-->
+                <img src="./images/LongLogo.png" id='longlogo' style="width:200px;text-align:center;">
+                <div id="welcome" class="tabcontent" style="display:block;">
+                    <h3 id="cycle">Welcome!</h3>
+                    <p>We are excited that you are here!</p>
+                    <p>Click next to get started!</p>
+                    <button class="tablinks" onclick="changeTab(event, 'theme')">Next</button>
+                </div>
+
+                <div id="theme" class="tabcontent">
+                    <h3>Make it yours.</h3>
+                    <p>Make OpenStream Music yours. Choose the theme that you want.</p>
+                    <div>
+                        <label>
+                        <input type="radio" name="theme" value="light" checked">Light</label>
+                        <label>
+                        <input type="radio" name="theme" value="dark">Dark</label>
+                    </div>
+                    <button class="tablinks" onclick="changeTab(event, 'finish')">Next</button>
+                </div>
+
+                <div id="finish" class="tabcontent">
+                    <h3>Thanks!</h3>
+                    <p>You're now ready to use OpenStream Music. Enjoy!</p>
+                    <button id="lets-go-button" class="tablinks">Let's go!</button>
+                </div>
+            </div>
+        </div>
+
 
         <div id="box-shadow">
             <div id="custom-player">
@@ -200,6 +290,23 @@
                 </div>
             </div>
         </div>
+        <div class="navbar-settings">
+            <div class="dropdown-menu" id="settings-dropdown">
+                <h3 style="float:left;">Settings</h3>
+                <button id="save-settings-button" style="float:right;margin-top:20px;">Save</button>
+                <br>
+                <br>
+                <h4>Theme</h4>
+                <div>
+                    <label>
+                        <input type="radio" name="theme" value="light" checked> Light Theme
+                    </label>
+                    <label>
+                        <input type="radio" name="theme" value="dark"> Dark Theme
+                    </label>
+                </div>
+            </div>
+        </div>
 
         <div id="playlist"></div>
     </main>
@@ -207,6 +314,82 @@
     <script src="./renderer.js"></script>
     <script src="./playlist.js"></script>
     <script>
+        const cycle = document.querySelector("#cycle");
+        let i = 0;
+        const welcome = ["Welcome", "Bienvenue", "Bienvenido", "Willkommen", "Benvenuto", "ようこそ", "Добро пожаловать", "欢迎"];
+        const cycleText = () => {
+            cycle.innerHTML = welcome[i];
+            i = ++i % welcome.length;
+        };
+        cycleText();
+        setInterval(cycleText, 2500);
+        const loadingContainer = document.getElementById("loading-container");
+        const songsList = document.getElementById("songs-list");
+        const titleEl = document.getElementById("page-title");
+        const navbar = document.getElementById("nav");
+        const search = document.getElementById("search");
+        const cp = document.getElementById("custom-player");
+        const cpc = document.getElementById("custom-player-container");
+        const bs = document.getElementById("box-shadow");
+
+        const firstRunDiv = document.getElementById("first-run-div");
+        firstRunDiv.style.display = "none";
+
+        if (!localStorage.getItem("firstRun")) {
+            // Display the "first-run-div"
+            const firstRunDiv = document.getElementById("first-run-div");
+            firstRunDiv.style.display = "flex"; // Change 'block' to 'flex' to maintain centering
+            songsList.style.display = "none";
+            titleEl.style.display = "none";
+            loadingContainer.style.display = "none";
+            navbar.style.display = "none";
+            search.style.display = "none";
+            cp.style.display = "none";
+            cpc.style.display = "none";
+            bs.style.display = "none";
+
+            // Set a flag to indicate that it's not the first run
+            localStorage.setItem("firstRun", "true");
+
+            // Add a click event listener to the "Let's Go" button
+            const letsGoButton = document.getElementById("lets-go-button");
+            letsGoButton.addEventListener("click", function() {
+                // Hide the first-run-div
+                firstRunDiv.style.display = "none";
+
+                // Show other content (you can add your logic here)
+                // For example, you can show the main content
+                songsList.style.display = "flex";
+                titleEl.style.display = "block";
+                loadingContainer.style.display = "none";
+                navbar.style.display = "flex";
+                search.style.display = "flex";
+                cp.style.display = "flex";
+                bs.style.display = "block";
+                cpc.style.display = "block";
+            });
+        }
+
+        function changeTab(evt, tabName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
         const themeToggleRadios = document.querySelectorAll("input[name='theme']");
         const body = document.body;
 
@@ -240,6 +423,9 @@
 
         settingsButton.addEventListener("click", function() {
             settingsDropdown.style.display = "block";
+            songsList.style.display = "none";
+            titleEl.style.display = "none";
+            loadingContainer.style.display = "none";
         });
 
         saveSettingsButton.addEventListener("click", function() {
@@ -247,6 +433,9 @@
 
             // Hide the settings dropdown
             settingsDropdown.style.display = "none";
+            songsList.style.display = "flex";
+            titleEl.style.display = "block";
+            loadingContainer.style.display = "none";
         });
     </script>
 </body>
