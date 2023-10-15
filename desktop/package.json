@@ -31,5 +31,10 @@
         "node-fetch": "^3.3.1",
         "youtube-music-api": "^1.0.6",
         "ytdl-core": "^4.11.5"
+    },
+    "dependencies": {
+        "node-fetch": "^3.3.1",
+        "youtube-music-api": "^1.0.6",
+        "ytdl-core": "^4.11.5"
     }
 }
