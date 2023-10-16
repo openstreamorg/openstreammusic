@@ -34,6 +34,8 @@ jobs:
       - name: Build Deb package
         run: |
           cd desktop/
+          sudo apt install snapd
+          sudo snap install snapcraft --classic
           npx electron-builder -l snap --x64 --arm64
 
       - name: Upload artifact
