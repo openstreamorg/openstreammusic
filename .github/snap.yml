@@ -1,0 +1,43 @@
+name: Build Snap
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: |
+          cd desktop/
+          npm install --force --legacy-peer-deps
+
+      - name: Install electron-builder
+        run: |
+          cd desktop/
+          npm install electron-builder
+
+      - name: Build Deb package
+        run: |
+          cd desktop/
+          npx electron-builder -l snap --universal
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: OpenStream-Music-Snap
+          path: ./desktop/build/*.snap
