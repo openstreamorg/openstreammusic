@@ -34,7 +34,7 @@ jobs:
       - name: Build Deb package
         run: |
           cd desktop/
-          npx electron-builder -l snap --universal
+          npx electron-builder -l snap --x64 --arm64
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
