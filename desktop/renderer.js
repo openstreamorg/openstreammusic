@@ -179,7 +179,7 @@ function showSongs(songs) {
             const playNextButton = document.createElement("button");
             playNextButton.innerText = "☰\t\t\tAdd to Queue";
             playNextButton.addEventListener("click", function() {
-                songQueue.push(song);
+                addSongToQueue(song);
                 menu.remove();
             });
 
@@ -344,3 +344,43 @@ searchInput.addEventListener("input", function(event) {
         showSongs(allSongs);
     }
 });
+
+function displaySongQueue() {
+    const songQueueElement = document.getElementById("song-queue");
+    songQueueElement.innerHTML = ""; // Clear the existing content
+
+    songQueue.forEach((song, index) => {
+        const songDiv = document.createElement("div");
+        songDiv.classList.add("queue-song");
+
+        const songName = document.createElement("span");
+        songName.textContent = song.name;
+        songDiv.appendChild(songName);
+        const songArtist = document.createElement("span");
+        songArtist.textContent = song.artist;
+        songDiv.appendChild(songArtist);
+
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "x";
+        removeButton.addEventListener("click", () => {
+            removeSongFromQueue(index);
+        });
+        songDiv.appendChild(removeButton);
+
+        songQueueElement.appendChild(songDiv);
+    });
+}
+
+function removeSongFromQueue(index) {
+    if (index >= 0 && index < songQueue.length) {
+        songQueue.splice(index, 1);
+        displaySongQueue(); // Refresh the queue display
+    }
+}
+
+// Example usage of adding a song to the queue
+// This can be called when the "Add to Queue" button is clicked
+function addSongToQueue(song) {
+    songQueue.push(song);
+    displaySongQueue(); // Refresh the queue display
+}
