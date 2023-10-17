@@ -405,7 +405,7 @@ nav {
 }
 
 #page-title {
-    margin-top: 45px;
+    margin-top: 90px;
     margin-left: 10px;
 }
 
@@ -639,4 +639,12 @@ img {
 
 .dark-theme #save-settings-button:hover {
     background-color: #090909;
+}
+
+.fa,
+.fas,
+.far,
+.fal,
+.fab {
+    font-family: "Font Awesome 5 Free";
 }

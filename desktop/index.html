@@ -198,7 +198,12 @@
             <img src="./images/logo.png" alt="OpenStream Music" />
         </div>
         <div class="search">
-            <input type="text" id="search-input" placeholder="Search the whole song library" />
+            <table>
+                <tr>
+                    <th><input type="text" id="search-input" placeholder="Search the whole song library" /></th>
+                    <th><button id="search-button" style="display:flex;z-index:100;"><i class="fa-solid fa-magnifying-glass"></i></button></th>
+                </tr>
+            </table>
         </div>
         <button id="settings-button">⚙</button>
         <!--<div class="navbar-settings">
@@ -221,9 +226,6 @@
 
 
     <main>
-        <div class="search" id="search">
-            <input type="text" id="search-input" placeholder="Search the whole song library" />
-        </div>
         <div id="offline-status">
             <img src="./images/offline.png">
             <h3>Cannot connect to internet.</h3>
@@ -299,10 +301,10 @@
                 <h4>Theme</h4>
                 <div>
                     <label>
-                        <input type="radio" name="theme" value="light" checked> Light Theme
+                        <input type="radio" name="theme2" value="light" checked> Light Theme
                     </label>
                     <label>
-                        <input type="radio" name="theme" value="dark"> Dark Theme
+                        <input type="radio" name="theme2" value="dark"> Dark Theme
                     </label>
                 </div>
             </div>
@@ -312,7 +314,6 @@
     </main>
 
     <script src="./renderer.js"></script>
-    <script src="./playlist.js"></script>
     <script>
         const cycle = document.querySelector("#cycle");
         let i = 0;
@@ -390,7 +391,8 @@
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
         }
-        const themeToggleRadios = document.querySelectorAll("input[name='theme']");
+        const themeToggleRadios = document.querySelectorAll("input[name='theme2']");
+        const themeToggleRadios2 = document.querySelectorAll("input[name='theme']");
         const body = document.body;
 
         // Check if the user previously set the dark theme
@@ -398,9 +400,11 @@
 
         if (isDarkThemeEnabled === "true") {
             themeToggleRadios[1].checked = true;
+            themeToggleRadios2[1].checked = true;
             body.classList.add("dark-theme");
         } else {
             themeToggleRadios[0].checked = true;
+            themeToggleRadios2[0].checked = true;
         }
 
         function updateTheme() {

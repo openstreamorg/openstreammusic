@@ -4,6 +4,9 @@ const api = new YoutubeMusicApi();
 const fs = require('fs');
 const ytdl = require('ytdl-core');
 
+const searchInput = document.getElementById("search-input");
+const searchButton = document.getElementById("search-button");
+
 let songQueue = [];
 
 hideLoadingAnimation();
@@ -206,16 +209,6 @@ function showSongs(songs) {
         });
 
     });
-
-    searchInput.addEventListener("input", function(event) {
-        const filteredSongs = allSongs.filter((song) => {
-            const songName = song.name.toLowerCase();
-            const searchTerm = event.target.value.toLowerCase();
-            return songName.includes(searchTerm);
-        });
-        showSongs(filteredSongs);
-        title();
-    });
 }
 
 function shuffleArray(array) {
@@ -243,52 +236,33 @@ async function getUrl(id) {
     let format = ytdl.chooseFormat(e.formats, { quality: 'highestaudio', filter: 'audioonly' });
     return format.url;
 }
-api.initalize().then(info => {
-    // API is initialized and ready to use
-    // You can now use the YouTube Music API within your search function
 
-    // Implement the search function
-    async function searchMusic(query) {
-        try {
-            showLoadingAnimation();
-            const results = await api.search(query);
-            const songs = results.content
-                .filter(item => item.type === 'song')
-                .map(async item => {
-                    const mp3Url = await getUrl(item.videoId);
-                    return {
-                        name: item.name,
-                        artist: item.artist.name,
-                        coverUrl: item.thumbnails[1].url,
-                        mp3Url: mp3Url,
-                    };
-                });
-            // Handle promises with Promise.all
-            Promise.all(songs).then(songArray => {
-                showSongs(songArray);
+api.initalize()
+async function searchMusic(query) {
+    try {
+        showLoadingAnimation();
+        const results = await api.search(query);
+        const songs = results.content
+            .filter(item => item.type === 'song')
+            .map(async item => {
+                const mp3Url = await getUrl(item.videoId);
+                return {
+                    name: item.name,
+                    artist: item.artist.name,
+                    coverUrl: item.thumbnails[1].url,
+                    mp3Url: mp3Url,
+                };
             });
-            hideLoadingAnimation();
-        } catch (error) {
-            console.error("Error searching music:", error);
-            hideLoadingAnimation();
-        }
+        // Handle promises with Promise.all
+        Promise.all(songs).then(songArray => {
+            showSongs(songArray);
+        });
+        hideLoadingAnimation();
+    } catch (error) {
+        console.error("Error searching music:", error);
+        hideLoadingAnimation();
     }
-
-
-    // Attach the search functionality to the input event of the search input field
-    const searchInput = document.getElementById("search-input");
-    searchInput.addEventListener("input", function(event) {
-        const searchQuery = event.target.value.trim();
-        if (searchQuery.length > 0) {
-            searchMusic(searchQuery);
-        } else {
-            // If the search input is empty, show all songs
-            showSongs(allSongs);
-        }
-    });
-}).catch(error => {
-    console.error("Error initializing YouTube Music API:", error);
-});
+}
 
 fetch("https://raw.githubusercontent.com/openstreamorg/openstreammusic-data/main/songs.json")
     .then((response) => response.json())
@@ -341,6 +315,32 @@ function updateSongInfo(song) {
     albumCover.src = song.coverUrl;
 }
 
-function addToPlaylist(song) {
-    window.api.send("add-to-playlist", song);
-}
+
+
+searchButton.addEventListener("click", function() {
+    const searchQuery = searchInput.value.trim();
+    if (searchQuery.length > 0) {
+        searchMusic(searchQuery);
+    } else {
+        // Handle empty search query
+        console.log("Search query is empty");
+    }
+});
+
+searchInput.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        const searchQuery = searchInput.value.trim();
+        if (searchQuery.length > 0) {
+            searchMusic(searchQuery);
+        } else {
+            // Handle empty search query
+            console.log("Search query is empty");
+        }
+    }
+});
+searchInput.addEventListener("input", function(event) {
+    const searchQuery = event.target.value.trim();
+    if (searchQuery.length = 0) {
+        showSongs(allSongs);
+    }
+});
