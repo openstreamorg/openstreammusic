@@ -649,6 +649,14 @@ img {
     font-family: "Font Awesome 5 Free";
 }
 
+#song-queue-container {
+    position: fixed;
+    bottom: 90px;
+    right: 10px;
+    width: 400px;
+    height: 300px;
+}
+
 #song-queue {
     background-color: #f2f2f2;
     display: none;
@@ -656,19 +664,15 @@ img {
     border-radius: 5px;
     width: 400px;
     height: 300px;
-    position: fixed;
-    bottom: 90px;
-    right: 10px;
-    box-shadow: 0px 0px 25px #000000;
+    box-shadow: 0px 0px 5px #000000;
     overflow-y: scroll;
-    /* position: fixed; */
 }
 
 .dark-theme #song-queue {
     background-color: #0d0d0d;
     display: none;
     border: 1px solid #333;
-    box-shadow: 0px 0px 25px #ffffff;
+    box-shadow: 0px 0px 5px #ffffff;
     /* position: fixed; */
 }
 
@@ -687,11 +691,17 @@ img {
     border-radius: 5px;
 }
 
+.dark-theme .queue-song {
+    background-color: #000;
+    border: 1px solid #222;
+}
+
 
 /* Style the remove button */
 
 #song-queue button {
     color: #000;
+    background-color: #f2f2f2;
     border: none;
     border-radius: 50%;
     width: 25px;
@@ -699,6 +709,16 @@ img {
     font-weight: bold;
     position: relative;
     cursor: pointer;
+}
+
+.dark-theme #song-queue button {
+    color: white;
+    background-color: #0d0d0d;
+}
+
+.dark-theme #song-queue button:hover {
+    color: white;
+    background-color: #1e1e1e;
 }
 
 #song-queue h3,
@@ -718,4 +738,41 @@ span {
     color: black;
     border: none;
     border-radius: 10px;
+}
+
+.dark-theme #queue-open {
+    background-color: #0d0d0d;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}
+
+#fa-icon {
+    width: 15px;
+    filter: invert(0%);
+}
+
+.dark-theme #fa-icon {
+    filter: invert(100%);
+}
+
+#search-button {
+    background-color: #ffffff00;
+    border: none;
+    border-radius: 10px;
+    padding-top: 5px;
+    color: black;
+}
+
+#search-button:hover {
+    background-color: #f2f2f2;
+}
+
+.dark-theme #search-button {
+    background-color: #00000000;
+    color: white;
+}
+
+.dark-theme #search-button:hover {
+    background-color: #000000;
 }

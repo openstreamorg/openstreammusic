@@ -91,7 +91,7 @@ function hideLoadingAnimation() {
 let allSongs = [];
 let currentlyPlaying = null;
 let audioPlayerEl = document.getElementById("custom-player");
-audioPlayerEl.addEventListener("ended", function () {
+audioPlayerEl.addEventListener("ended", function() {
     currentlyPlaying.pause();
     currentlyPlaying.classList.remove("playing");
 
@@ -153,7 +153,7 @@ function showSongs(songs) {
         songDiv.appendChild(bree);
         songDiv.appendChild(bree);
 
-        songDiv.addEventListener("click", function () {
+        songDiv.addEventListener("click", function() {
             if (currentlyPlaying) {
                 currentlyPlaying.pause();
                 currentlyPlaying.classList.remove("playing");
@@ -175,7 +175,7 @@ function showSongs(songs) {
             albumCoverEl.src = song.coverUrl;
         });
 
-        songDiv.addEventListener("contextmenu", function (event) {
+        songDiv.addEventListener("contextmenu", function(event) {
             event.preventDefault();
 
             const menu = document.createElement("div");
@@ -183,7 +183,7 @@ function showSongs(songs) {
 
             const playButton = document.createElement("button");
             playButton.innerText = "▶\t\t\tPlay";
-            playButton.addEventListener("click", function () {
+            playButton.addEventListener("click", function() {
                 customPlayer.pause();
                 customPlayer.currentTime = 0;
                 customPlayer.src = song.mp3Url;
@@ -204,7 +204,7 @@ function showSongs(songs) {
                 // If the song is already in the queue, provide the option to remove it
                 const removeFromQueueButton = document.createElement("button");
                 removeFromQueueButton.innerText = "🗑️\t\t\tRemove from Queue";
-                removeFromQueueButton.addEventListener("click", function () {
+                removeFromQueueButton.addEventListener("click", function() {
                     // Remove the song from the queue using its index
                     songQueue.splice(songIndexInQueue, 1);
                     displaySongQueue(); // Refresh the queue display
@@ -215,7 +215,7 @@ function showSongs(songs) {
                 // If the song is not in the queue, provide the option to add it
                 const playNextButton = document.createElement("button");
                 playNextButton.innerText = "☰\t\t\tAdd to Queue";
-                playNextButton.addEventListener("click", function () {
+                playNextButton.addEventListener("click", function() {
                     addSongToQueue(song);
                     menu.remove();
                 });
@@ -226,7 +226,7 @@ function showSongs(songs) {
             menu.appendChild(breakx);
             const addToPlaylistButton = document.createElement("button");
             addToPlaylistButton.innerText = "Add to Playlist";
-            addToPlaylistButton.addEventListener("click", function () {
+            addToPlaylistButton.addEventListener("click", function() {
                 addToPlaylist(song);
 
                 menu.remove();
@@ -238,7 +238,7 @@ function showSongs(songs) {
 
             document.body.appendChild(menu);
 
-            const removeMenu = function () {
+            const removeMenu = function() {
                 menu.remove();
                 window.removeEventListener("click", removeMenu);
             };
@@ -321,7 +321,7 @@ customPlayer.controlsList = "nodownload";
 customPlayerDiv.appendChild(customPlayer);
 document.body.appendChild(customPlayerDiv);
 
-customPlayer.addEventListener("ended", function () {
+customPlayer.addEventListener("ended", function() {
     if (songQueue.length > 0) {
         const nextSong = songQueue.shift(); // Get the next song from the queue
         customPlayer.src = nextSong.mp3Url;
@@ -361,7 +361,7 @@ function updateSongInfo(song) {
 
 
 
-searchButton.addEventListener("click", function () {
+searchButton.addEventListener("click", function() {
     const searchQuery = searchInput.value.trim();
     if (searchQuery.length > 0) {
         searchMusic(searchQuery);
@@ -371,7 +371,7 @@ searchButton.addEventListener("click", function () {
     }
 });
 
-searchInput.addEventListener("keypress", function (event) {
+searchInput.addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
         const searchQuery = searchInput.value.trim();
         if (searchQuery.length > 0) {
@@ -382,7 +382,7 @@ searchInput.addEventListener("keypress", function (event) {
         }
     }
 });
-searchInput.addEventListener("input", function (event) {
+searchInput.addEventListener("input", function(event) {
     const searchQuery = event.target.value.trim();
     if (searchQuery.length = 0) {
         showSongs(allSongs);

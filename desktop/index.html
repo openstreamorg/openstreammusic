@@ -9,7 +9,6 @@
     <title>OpenStream Music</title>
     <link rel="stylesheet" href="./css/style.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"></script>
-
     <style>
         #settings-button {
             border-radius: 10px;
@@ -193,8 +192,10 @@
 </head>
 
 <body>
-    <div id="song-queue">
-        <!-- Song queue will be displayed here -->
+    <div id="song-queue-container">
+        <div id="song-queue">
+            <!-- Song queue will be displayed here -->
+        </div>
     </div>
     <nav id="nav">
         <div class="logo">
@@ -204,8 +205,7 @@
             <table>
                 <tr>
                     <th><input type="text" id="search-input" placeholder="Search the whole song library" /></th>
-                    <th><button id="search-button" style="display:flex;z-index:100;"><i
-                                class="fa-solid fa-magnifying-glass"></i></button></th>
+                    <th><button id="search-button" style="z-index:1;"><img id='fa-icon' src="images/magnifying-glass-solid.svg"></i></button></th>
                 </tr>
             </table>
         </div>
@@ -450,14 +450,21 @@
         document.addEventListener("DOMContentLoaded", function() {
             const songqueue = document.getElementById("song-queue");
             const queueopen = document.getElementById("queue-open");
+            const queueopen2 = document.getElementById("queue-2open");
 
             queueopen.addEventListener("click", function() {
                 if (songqueue.style.display === "none" || songqueue.style.display === "") {
                     songqueue.style.display = "block";
                     songqueue.style.position = "absolute";
+                    document.getElementById("queue-open").innerHTML = "🞃";
                 } else {
                     songqueue.style.display = "none";
+                    document.getElementById("queue-open").innerHTML = "☰";
                 }
+            });
+            queueopen2.addEventListener("click", function() {
+                songqueue.style.display = "none";
+                document.getElementById("queue-open").innerHTML = "☰";
             });
         });
     </script>
