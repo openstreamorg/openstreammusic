@@ -220,7 +220,7 @@ nav {
 
 #song-info {
     position: absolute;
-    left: 120px;
+    left: 110px;
     top: 0;
     bottom: 0;
     right: 0;
@@ -421,7 +421,7 @@ img {
 
 .right-click-menu {
     background-color: #ffffff;
-    width: 160px;
+    width: 220px;
     height: 100px;
     padding-top: 10px;
     text-align: center;
@@ -430,7 +430,7 @@ img {
 }
 
 .right-click-menu button {
-    width: 142px;
+    width: 202px;
     height: 40px;
     border: none;
     padding-left: 15px;
@@ -441,7 +441,7 @@ img {
 }
 
 .right-click-menu button:nth-child(2) {
-    width: 142px;
+    width: 202px;
     height: 40px;
     border: none;
     padding-left: 15px;
@@ -647,4 +647,75 @@ img {
 .fal,
 .fab {
     font-family: "Font Awesome 5 Free";
+}
+
+#song-queue {
+    background-color: #f2f2f2;
+    display: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 400px;
+    height: 300px;
+    position: fixed;
+    bottom: 90px;
+    right: 10px;
+    box-shadow: 0px 0px 25px #000000;
+    overflow-y: scroll;
+    /* position: fixed; */
+}
+
+.dark-theme #song-queue {
+    background-color: #0d0d0d;
+    display: none;
+    border: 1px solid #333;
+    box-shadow: 0px 0px 25px #ffffff;
+    /* position: fixed; */
+}
+
+
+/* Style each song entry in the queue */
+
+.queue-song {
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin: 5px 0;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+
+
+/* Style the remove button */
+
+#song-queue button {
+    color: #000;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    font-weight: bold;
+    position: relative;
+    cursor: pointer;
+}
+
+#song-queue h3,
+p {
+    margin-left: 10px;
+}
+
+
+/* Add some margin to the song name and artist for spacing */
+
+span {
+    margin: 0 10px;
+}
+
+#queue-open {
+    background-color: #f2f2f2;
+    color: black;
+    border: none;
+    border-radius: 10px;
 }

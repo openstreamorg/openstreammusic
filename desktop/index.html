@@ -193,6 +193,9 @@
 </head>
 
 <body>
+    <div id="song-queue">
+        <!-- Song queue will be displayed here -->
+    </div>
     <nav id="nav">
         <div class="logo">
             <img src="./images/logo.png" alt="OpenStream Music" />
@@ -201,7 +204,8 @@
             <table>
                 <tr>
                     <th><input type="text" id="search-input" placeholder="Search the whole song library" /></th>
-                    <th><button id="search-button" style="display:flex;z-index:100;"><i class="fa-solid fa-magnifying-glass"></i></button></th>
+                    <th><button id="search-button" style="display:flex;z-index:100;"><i
+                                class="fa-solid fa-magnifying-glass"></i></button></th>
                 </tr>
             </table>
         </div>
@@ -224,7 +228,6 @@
         </div>-->
     </nav>
 
-
     <main>
         <div id="offline-status">
             <img src="./images/offline.png">
@@ -235,9 +238,6 @@
         <div id="loading-container" class="hidden">
             <p>Searching...</p>
             <span class="loader"></span>
-        </div>
-        <div id="song-queue" style="margin-bottom:80px;">
-            <!-- Song queue will be displayed here -->
         </div>
         <div id="first-run-div" style="display: none; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(238deg, #fd8800aa, #fd008faa, #9700fdaa, #003dfdaa, #05c7e6aa, #4bd58daa); background-size: 300% 300%; -webkit-animation: rainbow 30s ease infinite; animation: rainbow 30s ease infinite;">
             <!-- Content for the first run div goes here -->
@@ -260,9 +260,9 @@
                     <p>Make OpenStream Music yours. Choose the theme that you want.</p>
                     <div>
                         <label>
-                        <input type="radio" name="theme" value="light" checked">Light</label>
+                            <input type="radio" name="theme" value="light" checked">Light</label>
                         <label>
-                        <input type="radio" name="theme" value="dark">Dark</label>
+                            <input type="radio" name="theme" value="dark">Dark</label>
                     </div>
                     <button class="tablinks" onclick="changeTab(event, 'finish')">Next</button>
                 </div>
@@ -283,6 +283,7 @@
                         <div id="song-name">You haven't chosen a song to play</div>
                         <div id="artist-name">Choose a song and it will show up here.</div>
                     </div>
+
                 </div>
                 <audio id="audio-player" src=""></audio>
                 <div id="player-song-info">
@@ -291,13 +292,15 @@
                         <div id="player-song-name"></div>
                         <div id="player-artist-name"></div>
                     </div>
+
                 </div>
             </div>
+            <button id="queue-open" class="queue-open" style="position:relative;z-index:1;float:right;top:25px;right:5px;" title="Open the song Queue">☰</button>
         </div>
         <div class="navbar-settings">
             <div class="dropdown-menu" id="settings-dropdown">
                 <h3 style="float:left;">Settings</h3>
-                <button id="save-settings-button" style="float:right;margin-top:20px;">Save</button>
+                <button id="save-settings-button" style="float:right;margin-top:75px;">Save</button>
                 <br>
                 <br>
                 <h4>Theme</h4>
@@ -442,6 +445,20 @@
             songsList.style.display = "flex";
             titleEl.style.display = "block";
             loadingContainer.style.display = "none";
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const songqueue = document.getElementById("song-queue");
+            const queueopen = document.getElementById("queue-open");
+
+            queueopen.addEventListener("click", function() {
+                if (songqueue.style.display === "none" || songqueue.style.display === "") {
+                    songqueue.style.display = "block";
+                    songqueue.style.position = "absolute";
+                } else {
+                    songqueue.style.display = "none";
+                }
+            });
         });
     </script>
 </body>

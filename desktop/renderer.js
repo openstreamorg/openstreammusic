@@ -11,6 +11,26 @@ let songQueue = [];
 
 hideLoadingAnimation();
 
+const songQueueElement = document.getElementById("song-queue");
+
+// Clear the existing content
+songQueueElement.innerHTML = "";
+
+// Create a title element
+const songTitle = document.createElement("div");
+
+const songQueueTitle = document.createElement("h3");
+songQueueTitle.textContent = 'Your Queue';
+songTitle.appendChild(songQueueTitle);
+
+const songQueueInfo = document.createElement("p");
+songQueueInfo.textContent = 'Nothing here yet! Add some songs to start playing.';
+songTitle.appendChild(songQueueInfo);
+
+// Append the title to the song queue container
+songQueueElement.appendChild(songTitle);
+
+
 function donothing() {
     // nothing
 }
@@ -71,7 +91,7 @@ function hideLoadingAnimation() {
 let allSongs = [];
 let currentlyPlaying = null;
 let audioPlayerEl = document.getElementById("custom-player");
-audioPlayerEl.addEventListener("ended", function() {
+audioPlayerEl.addEventListener("ended", function () {
     currentlyPlaying.pause();
     currentlyPlaying.classList.remove("playing");
 
@@ -133,7 +153,7 @@ function showSongs(songs) {
         songDiv.appendChild(bree);
         songDiv.appendChild(bree);
 
-        songDiv.addEventListener("click", function() {
+        songDiv.addEventListener("click", function () {
             if (currentlyPlaying) {
                 currentlyPlaying.pause();
                 currentlyPlaying.classList.remove("playing");
@@ -155,7 +175,7 @@ function showSongs(songs) {
             albumCoverEl.src = song.coverUrl;
         });
 
-        songDiv.addEventListener("contextmenu", function(event) {
+        songDiv.addEventListener("contextmenu", function (event) {
             event.preventDefault();
 
             const menu = document.createElement("div");
@@ -163,7 +183,7 @@ function showSongs(songs) {
 
             const playButton = document.createElement("button");
             playButton.innerText = "▶\t\t\tPlay";
-            playButton.addEventListener("click", function() {
+            playButton.addEventListener("click", function () {
                 customPlayer.pause();
                 customPlayer.currentTime = 0;
                 customPlayer.src = song.mp3Url;
@@ -176,20 +196,37 @@ function showSongs(songs) {
             });
 
             menu.appendChild(playButton);
-            const playNextButton = document.createElement("button");
-            playNextButton.innerText = "☰\t\t\tAdd to Queue";
-            playNextButton.addEventListener("click", function() {
-                addSongToQueue(song);
-                menu.remove();
-            });
 
-            menu.appendChild(playNextButton);
+            // Find the index of the song in the queue
+            const songIndexInQueue = songQueue.findIndex((queuedSong) => queuedSong.mp3Url === song.mp3Url);
+
+            if (songIndexInQueue !== -1) {
+                // If the song is already in the queue, provide the option to remove it
+                const removeFromQueueButton = document.createElement("button");
+                removeFromQueueButton.innerText = "🗑️\t\t\tRemove from Queue";
+                removeFromQueueButton.addEventListener("click", function () {
+                    // Remove the song from the queue using its index
+                    songQueue.splice(songIndexInQueue, 1);
+                    displaySongQueue(); // Refresh the queue display
+                    menu.remove();
+                });
+                menu.appendChild(removeFromQueueButton);
+            } else {
+                // If the song is not in the queue, provide the option to add it
+                const playNextButton = document.createElement("button");
+                playNextButton.innerText = "☰\t\t\tAdd to Queue";
+                playNextButton.addEventListener("click", function () {
+                    addSongToQueue(song);
+                    menu.remove();
+                });
+                menu.appendChild(playNextButton);
+            }
 
             const breakx = document.createElement("br");
             menu.appendChild(breakx);
             const addToPlaylistButton = document.createElement("button");
             addToPlaylistButton.innerText = "Add to Playlist";
-            addToPlaylistButton.addEventListener("click", function() {
+            addToPlaylistButton.addEventListener("click", function () {
                 addToPlaylist(song);
 
                 menu.remove();
@@ -201,7 +238,7 @@ function showSongs(songs) {
 
             document.body.appendChild(menu);
 
-            const removeMenu = function() {
+            const removeMenu = function () {
                 menu.remove();
                 window.removeEventListener("click", removeMenu);
             };
@@ -284,13 +321,16 @@ customPlayer.controlsList = "nodownload";
 customPlayerDiv.appendChild(customPlayer);
 document.body.appendChild(customPlayerDiv);
 
-customPlayer.addEventListener("ended", function() {
+customPlayer.addEventListener("ended", function () {
     if (songQueue.length > 0) {
         const nextSong = songQueue.shift(); // Get the next song from the queue
         customPlayer.src = nextSong.mp3Url;
         customPlayer.play();
         currentlyPlaying = customPlayer;
         updateSongInfo(nextSong);
+
+        // Remove the finished song from the queue
+        displaySongQueue();
     } else {
         // If the queue is empty, you can handle it as needed (e.g., shuffle and play a random song).
         const shuffledSongs = shuffleArray(allSongs);
@@ -302,8 +342,12 @@ customPlayer.addEventListener("ended", function() {
             name: randomSong.name,
             artist: randomSong.artist,
         });
+        const songQueueTitle = document.createElement("h3");
+        songQueueTitle.textContent = 'Your Queue';
+        songTitle.appendChild(songQueueTitle);
     }
 });
+
 
 
 function updateSongInfo(song) {
@@ -317,7 +361,7 @@ function updateSongInfo(song) {
 
 
 
-searchButton.addEventListener("click", function() {
+searchButton.addEventListener("click", function () {
     const searchQuery = searchInput.value.trim();
     if (searchQuery.length > 0) {
         searchMusic(searchQuery);
@@ -327,7 +371,7 @@ searchButton.addEventListener("click", function() {
     }
 });
 
-searchInput.addEventListener("keypress", function(event) {
+searchInput.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
         const searchQuery = searchInput.value.trim();
         if (searchQuery.length > 0) {
@@ -338,7 +382,7 @@ searchInput.addEventListener("keypress", function(event) {
         }
     }
 });
-searchInput.addEventListener("input", function(event) {
+searchInput.addEventListener("input", function (event) {
     const searchQuery = event.target.value.trim();
     if (searchQuery.length = 0) {
         showSongs(allSongs);
@@ -346,30 +390,61 @@ searchInput.addEventListener("input", function(event) {
 });
 
 function displaySongQueue() {
+    // Get the song queue container element
     const songQueueElement = document.getElementById("song-queue");
-    songQueueElement.innerHTML = ""; // Clear the existing content
 
+    // Clear the existing content
+    songQueueElement.innerHTML = "";
+
+    // Create a title element
+    const songTitle = document.createElement("div");
+
+    const songQueueTitle = document.createElement("h3");
+    songQueueTitle.textContent = 'Your Queue';
+    songTitle.appendChild(songQueueTitle);
+
+    // Append the title to the song queue container
+    songQueueElement.appendChild(songTitle);
+
+    // Loop through the song queue
     songQueue.forEach((song, index) => {
+        // Create a div for each song
         const songDiv = document.createElement("div");
         songDiv.classList.add("queue-song");
 
+        // Create a span for the song name
+
         const songName = document.createElement("span");
-        songName.textContent = song.name;
+        songName.textContent = `${song.name} `;
         songDiv.appendChild(songName);
+        songName.style.fontWeight = "bold";
+
+        // Add a line break for separation
+
+        // Create a span for the artist
         const songArtist = document.createElement("span");
         songArtist.textContent = song.artist;
         songDiv.appendChild(songArtist);
 
+        // Create a button to remove the song from the queue
         const removeButton = document.createElement("button");
         removeButton.textContent = "x";
+        removeButton.style.float = "right";
+
+        // Add a click event listener to remove the song
         removeButton.addEventListener("click", () => {
             removeSongFromQueue(index);
         });
+
+        // Add the remove button to the song div
         songDiv.appendChild(removeButton);
 
+        // Add the song div to the song queue container
         songQueueElement.appendChild(songDiv);
     });
 }
+
+
 
 function removeSongFromQueue(index) {
     if (index >= 0 && index < songQueue.length) {
@@ -381,6 +456,16 @@ function removeSongFromQueue(index) {
 // Example usage of adding a song to the queue
 // This can be called when the "Add to Queue" button is clicked
 function addSongToQueue(song) {
+    const isFirstSong = songQueue.length === 0;
+
     songQueue.push(song);
     displaySongQueue(); // Refresh the queue display
+
+    if (isFirstSong) {
+        // If it's the first song in the queue, start playing it
+        customPlayer.src = song.mp3Url;
+        customPlayer.play();
+        currentlyPlaying = customPlayer;
+        updateSongInfo(song);
+    }
 }
