@@ -193,9 +193,7 @@
 
 <body>
     <div id="song-queue-container">
-        <div id="song-queue">
-            <!-- Song queue will be displayed here -->
-        </div>
+        <div id="song-queue"></div>
     </div>
     <nav id="nav">
         <div class="logo">
@@ -204,28 +202,14 @@
         <div class="search">
             <table>
                 <tr>
-                    <th><input type="text" id="search-input" placeholder="Search the whole song library" /></th>
-                    <th><button id="search-button" style="z-index:1;"><img id='fa-icon' src="images/magnifying-glass-solid.svg"></i></button></th>
+                    <th><input type="text" id="search-input" placeholder="Search the whole song library"></th>
+                    <th><button id="search-button" onclick="clearSearchInput()" style="z-index:1;margin-left:-40px;"><img id='fa-icon' src="images/fa-icon/xmark.png"></i></button></button>
+                    </th>
+                    <th><button id="search-button" style="z-index:1;margin-left:-10px;"><img id='fa-icon' src="images/fa-icon/magnifying-glass-solid.svg"></i></button></th>
                 </tr>
             </table>
         </div>
         <button id="settings-button">⚙</button>
-        <!--<div class="navbar-settings">
-            
-            <div class="dropdown-menu" id="settings-dropdown">
-                <h3>Settings</h3>
-                <h4>Theme</h4>
-                <div>
-                    <label>
-            <input type="radio" name="theme" value="light" checked> Light Theme
-          </label>
-                    <label>
-            <input type="radio" name="theme" value="dark"> Dark Theme
-          </label>
-                </div>
-                <button id="save-settings-button">Save</button>
-            </div>
-        </div>-->
     </nav>
 
     <main>
@@ -467,6 +451,11 @@
                 document.getElementById("queue-open").innerHTML = "☰";
             });
         });
+
+        function clearSearchInput() {
+            const searchInput = document.getElementById("search-input");
+            searchInput.value = ""; // Clear the text in the input field
+        }
     </script>
 </body>
 

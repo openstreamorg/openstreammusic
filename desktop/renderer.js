@@ -294,7 +294,7 @@ async function searchMusic(query) {
         Promise.all(songs).then(songArray => {
             showSongs(songArray);
         });
-        hideLoadingAnimation();
+        setTimeout(hideLoadingAnimation(), 3000);
     } catch (error) {
         console.error("Error searching music:", error);
         hideLoadingAnimation();
@@ -420,6 +420,8 @@ function displaySongQueue() {
         songName.style.fontWeight = "bold";
 
         // Add a line break for separation
+        const songBr = document.createElement("br");
+        songDiv.appendChild(songBr);
 
         // Create a span for the artist
         const songArtist = document.createElement("span");
@@ -430,6 +432,7 @@ function displaySongQueue() {
         const removeButton = document.createElement("button");
         removeButton.textContent = "x";
         removeButton.style.float = "right";
+        removeButton.style.verticalAlign = "baseline";
 
         // Add a click event listener to remove the song
         removeButton.addEventListener("click", () => {
