@@ -1,8 +1,8 @@
 // Import the YouTube Music API module
 const YoutubeMusicApi = require('youtube-music-api');
 const api = new YoutubeMusicApi();
-const fs = require('fs');
 const ytdl = require('ytdl-core');
+const { ipcRenderer } = require('electron');
 
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
@@ -163,7 +163,6 @@ function showSongs(songs) {
             customPlayer.currentTime = 0;
             customPlayer.src = song.mp3Url;
 
-            console.log(song.mp3Url);
             customPlayer.play();
             currentlyPlaying = customPlayer;
 

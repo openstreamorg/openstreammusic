@@ -667,6 +667,7 @@ img {
     height: 300px;
     box-shadow: 0px 0px 5px #000000;
     overflow-y: scroll;
+    z-index: -999;
 }
 
 .dark-theme #song-queue {
@@ -776,4 +777,8 @@ span {
 
 .dark-theme #search-button:hover {
     background-color: #000000;
+}
+
+main {
+    z-index: 999;
 }

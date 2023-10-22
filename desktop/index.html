@@ -8,187 +8,8 @@
 
     <title>OpenStream Music</title>
     <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/index_styles.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"></script>
-    <style>
-        #settings-button {
-            border-radius: 10px;
-            position: absolute;
-            right: 30px;
-            height: 50px;
-            background-color: #ffffff00;
-            color: white;
-            border: none;
-            font-size: 45px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            line-height: inherit;
-        }
-        
-        #settings-button:hover {
-            background-color: #ffffff30;
-        }
-        
-        .dark-theme #settings-button:hover {
-            background-color: #00000030;
-        }
-        
-        .dark-theme #settings-button {
-            color: white;
-        }
-        
-        .navbar-settings {
-            margin: auto;
-            width: 100%;
-            margin-top: 10px;
-            border-radius: 10px;
-        }
-        
-        .dark-theme .navbar-settings .dropdown-menu {
-            display: none;
-            margin: auto;
-            padding: 8px;
-            border-radius: 10px;
-        }
-        
-        .navbar-settings .dropdown-menu {
-            display: none;
-            border-radius: 10px;
-            margin: auto;
-            padding: 8px;
-        }
-        
-        .navbar-settings:hover .dropdown-menu {
-            display: block;
-        }
-        
-        .dropdown-menu label {
-            display: block;
-            margin-bottom: 8px;
-        }
-        
-        #loading-container {
-            display: none;
-            position: absolute;
-            top: calc(50% - 100px);
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0);
-            color: black;
-            text-align: center;
-        }
-        
-        .dark-theme #loading-container {
-            background: rgba(0, 0, 0, 0);
-            color: white;
-            overflow: hidden;
-        }
-        
-        .loader {
-            width: 25%;
-            height: 4.8px;
-            display: inline-block;
-            position: relative;
-            background: rgba(240, 240, 240, 0.9);
-            overflow: hidden;
-        }
-        
-        .dark-theme .loader {
-            background: rgba(255, 255, 255, 0.15);
-        }
-        
-        .loader::after {
-            content: '';
-            width: 192px;
-            height: 4.8px;
-            background: #222;
-            position: absolute;
-            top: 0;
-            left: 0;
-            box-sizing: border-box;
-            animation: animloader 2s linear infinite;
-        }
-        
-        .dark-theme .loader::after {
-            background: #fff;
-        }
-        
-        @keyframes animloader {
-            0% {
-                left: 0;
-                transform: translateX(-50%);
-            }
-            100% {
-                left: 100%;
-                transform: translateX(0%);
-            }
-        }
-        
-        #offline-status img {
-            width: 150px;
-        }
-        
-        #offline-status {
-            margin-top: 10%;
-            text-align: center;
-        }
-        
-        .tab button {
-            background-color: inherit;
-            float: left;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 14px 16px;
-            transition: 0.3s;
-        }
-        /* Change background color of buttons on hover */
-        
-        .tab button:hover {
-            background-color: #ddd;
-        }
-        /* Create an active/current tablink class */
-        
-        .tab button.active {
-            background-color: #ccc;
-        }
-        /* Style the tab content */
-        
-        .tabcontent {
-            display: none;
-            padding: 6px 12px;
-            border-top: none;
-            background-color: white;
-            color: black;
-        }
-        
-        .tabcontent {
-            animation: fadeEffect 1s;
-            /* Fading effect takes 1 second */
-        }
-        /* Go from zero to full opacity */
-        
-        .tablinks {
-            float: right;
-            background-color: #fff;
-            padding: 9px 13px;
-            border-radius: 10px;
-            border: 1px solid black;
-        }
-        
-        .tablinks:hover {
-            background-color: #aaa;
-        }
-        
-        @keyframes fadeEffect {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -203,16 +24,18 @@
             <table>
                 <tr>
                     <th><input type="text" id="search-input" placeholder="Search the whole song library"></th>
-                    <th><button id="search-button" onclick="clearSearchInput()" style="z-index:1;margin-left:-40px;"><img id='fa-icon' src="images/fa-icon/xmark.png"></i></button></button>
+                    <th><button id="search-button" onclick="clearSearchInput()" style="z-index:1;margin-left:-40px;"><img id='fa-icon'
+                                src="images/fa-icon/xmark.png"></i></button></button>
                     </th>
-                    <th><button id="search-button" style="z-index:1;margin-left:-10px;"><img id='fa-icon' src="images/fa-icon/magnifying-glass-solid.svg"></i></button></th>
+                    <th><button id="search-button" style="z-index:1;margin-left:-10px;"><img id='fa-icon'
+                                src="images/fa-icon/magnifying-glass-solid.svg"></i></button></th>
                 </tr>
             </table>
         </div>
         <button id="settings-button">⚙</button>
     </nav>
 
-    <main>
+    <main id="main">
         <div id="offline-status">
             <img src="./images/offline.png">
             <h3>Cannot connect to internet.</h3>
@@ -283,18 +106,37 @@
         </div>
         <div class="navbar-settings">
             <div class="dropdown-menu" id="settings-dropdown">
-                <h3 style="float:left;">Settings</h3>
+                <h3 style="float:left;margin-top:75px;">Settings</h3>
                 <button id="save-settings-button" style="float:right;margin-top:75px;">Save</button>
+
                 <br>
                 <br>
-                <h4>Theme</h4>
+                <br>
+                <br>
+                <br>
                 <div>
-                    <label>
-                        <input type="radio" name="theme2" value="light" checked> Light Theme
-                    </label>
-                    <label>
-                        <input type="radio" name="theme2" value="dark"> Dark Theme
-                    </label>
+                    <div class="settings-tab">
+                        <button class="settings-tablinks" onclick="openSettingsTab(event, 'Theme')" id="defaultOpen">Theme</button>
+                        <button class="settings-tablinks" onclick="openSettingsTab(event, 'About')">About</button>
+                    </div>
+
+                    <div id="Theme" class="settings-content">
+                        <h3>Theme</h3>
+                        <p>Choose your preferred theme.</p>
+                        <div>
+                            <label>
+                                <input type="radio" name="theme2" value="light" checked> Light Theme
+                            </label>
+                            <label>
+                                <input type="radio" name="theme2" value="dark"> Dark Theme
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="About" class="settings-content">
+                        <h3>About</h3>
+                        <p>OpenStream Music</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -433,22 +275,19 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             const songqueue = document.getElementById("song-queue");
+            const songqueuecontainer = document.getElementById("song-queue-container");
             const queueopen = document.getElementById("queue-open");
-            const queueopen2 = document.getElementById("queue-2open");
 
             queueopen.addEventListener("click", function() {
                 if (songqueue.style.display === "none" || songqueue.style.display === "") {
                     songqueue.style.display = "block";
-                    songqueue.style.position = "absolute";
+                    songqueuecontainer.style.zIndex = '1';
                     document.getElementById("queue-open").innerHTML = "🞃";
                 } else {
                     songqueue.style.display = "none";
+                    songqueuecontainer.style.zIndex = '-1';
                     document.getElementById("queue-open").innerHTML = "☰";
                 }
-            });
-            queueopen2.addEventListener("click", function() {
-                songqueue.style.display = "none";
-                document.getElementById("queue-open").innerHTML = "☰";
             });
         });
 
@@ -456,6 +295,23 @@
             const searchInput = document.getElementById("search-input");
             searchInput.value = ""; // Clear the text in the input field
         }
+
+        function openSettingsTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("settings-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("settings-tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // Get the element with id="defaultOpen" and click on it
+        document.getElementById("defaultOpen").click();
     </script>
 </body>
 
