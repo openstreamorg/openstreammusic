@@ -656,6 +656,7 @@ img {
     right: 10px;
     width: 400px;
     height: 300px;
+    z-index: -9999;
 }
 
 #song-queue {
@@ -754,7 +755,17 @@ span {
     filter: invert(0%);
 }
 
+#fa-icon2 {
+    height: 20px;
+    width: 20px;
+    filter: invert(0%);
+}
+
 .dark-theme #fa-icon {
+    filter: invert(100%);
+}
+
+.dark-theme #fa-icon2 {
     filter: invert(100%);
 }
 

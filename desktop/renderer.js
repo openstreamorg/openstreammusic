@@ -2,12 +2,12 @@
 const YoutubeMusicApi = require('youtube-music-api');
 const api = new YoutubeMusicApi();
 const ytdl = require('ytdl-core');
-const { ipcRenderer } = require('electron');
 
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
 
 let songQueue = [];
+let isFirstPlay = true; // Add this variable to track the first play
 
 hideLoadingAnimation();
 
@@ -82,10 +82,14 @@ function hideLoadingAnimation() {
     const loadingContainer = document.getElementById("loading-container");
     const songsList = document.getElementById("songs-list");
     const titleEl = document.getElementById("page-title");
-    songsList.style.display = "flex";
-    titleEl.style.display = "block";
-    loadingContainer.style.display = "none";
+
+    setTimeout(function() {
+        songsList.style.display = "flex";
+        titleEl.style.display = "block";
+        loadingContainer.style.display = "none";
+    }, 4000); // 3000 milliseconds (3 seconds)
 }
+
 
 // Existing code for playing and displaying songs
 let allSongs = [];
@@ -321,17 +325,20 @@ customPlayerDiv.appendChild(customPlayer);
 document.body.appendChild(customPlayerDiv);
 
 customPlayer.addEventListener("ended", function() {
-    if (songQueue.length > 0) {
-        const nextSong = songQueue.shift(); // Get the next song from the queue
-        customPlayer.src = nextSong.mp3Url;
-        customPlayer.play();
-        currentlyPlaying = customPlayer;
-        updateSongInfo(nextSong);
+    playNextSong();
+});
 
-        // Remove the finished song from the queue
+function playNextSong() {
+    if (songQueue.length > 0) {
+        removeSongFromQueue(0);
+        const nextSong = songQueue.shift();
+        console.log(nextSong)
+        customPlayer.src = nextSong.mp3Url;
+        updateSongInfo(nextSong);
+        customPlayer.play(); // Play the next song immediately
+        currentlyPlaying = customPlayer;
         displaySongQueue();
     } else {
-        // If the queue is empty, you can handle it as needed (e.g., shuffle and play a random song).
         const shuffledSongs = shuffleArray(allSongs);
         const randomSong = shuffledSongs[0];
         customPlayer.src = randomSong.mp3Url;
@@ -341,13 +348,9 @@ customPlayer.addEventListener("ended", function() {
             name: randomSong.name,
             artist: randomSong.artist,
         });
-        const songQueueTitle = document.createElement("h3");
-        songQueueTitle.textContent = 'Your Queue';
-        songTitle.appendChild(songQueueTitle);
+        displaySongQueue();
     }
-});
-
-
+}
 
 function updateSongInfo(song) {
     const songName = document.getElementById("song-name");
@@ -465,6 +468,7 @@ function addSongToQueue(song) {
 
     if (isFirstSong) {
         // If it's the first song in the queue, start playing it
+        isFirstPlay = false;
         customPlayer.src = song.mp3Url;
         customPlayer.play();
         currentlyPlaying = customPlayer;

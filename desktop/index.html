@@ -116,26 +116,33 @@
                 <br>
                 <div>
                     <div class="settings-tab">
-                        <button class="settings-tablinks" onclick="openSettingsTab(event, 'Theme')" id="defaultOpen">Theme</button>
-                        <button class="settings-tablinks" onclick="openSettingsTab(event, 'About')">About</button>
+                        <button class="settings-tablinks" onclick="openSettingsTab(event, 'Appearance')" id="defaultOpen"><img src='images/fa-icon/palette-solid.svg' id='fa-icon2'> Appearance</button>
+                        <button class="settings-tablinks" onclick="openSettingsTab(event, 'About')"><img src='images/fa-icon/question-solid.svg' id='fa-icon2'> About</button>
                     </div>
 
-                    <div id="Theme" class="settings-content">
+                    <div id="Appearance" class="settings-content">
                         <h3>Theme</h3>
-                        <p>Choose your preferred theme.</p>
+                        <p>Choose your preferred look for OpenStream Music.</p>
                         <div>
                             <label>
-                                <input type="radio" name="theme2" value="light" checked> Light Theme
+                                <input type="radio" name="theme2" value="light" title="The default look for OpenStream Music" checked> Light Theme
                             </label>
                             <label>
-                                <input type="radio" name="theme2" value="dark"> Dark Theme
+                                <input type="radio" name="theme2" value="dark" title="Dark theme is easy on your eyes."> Dark Theme
                             </label>
                         </div>
                     </div>
 
                     <div id="About" class="settings-content">
                         <h3>About</h3>
-                        <p>OpenStream Music</p>
+                        <img src="images/LongLogo.png" style="width:300px;">
+                        <b><p>OpenStream Music<span id="appVersion">1.3.0</span></b>
+                        </p>
+                        <p>Running on Electron<span id="electronVersion"></span>
+                        </p>
+                        <p>OpenStream Music is made possible by <a href="https://www.electronjs.org" target="_blank">Electron</a> and <a href="https://nodejs.org" target="_blank">Node.js</a>.
+                        </p>
+                        <p>Please report bugs to <a href='https://github.com/openstreamorg/openstreammusic/issues' target="_blank">our GitHub repository.</a></p>
                     </div>
                 </div>
             </div>
@@ -281,11 +288,11 @@
             queueopen.addEventListener("click", function() {
                 if (songqueue.style.display === "none" || songqueue.style.display === "") {
                     songqueue.style.display = "block";
-                    songqueuecontainer.style.zIndex = '1';
+                    songqueuecontainer.style.zIndex = '111';
                     document.getElementById("queue-open").innerHTML = "🞃";
                 } else {
                     songqueue.style.display = "none";
-                    songqueuecontainer.style.zIndex = '-1';
+                    songqueuecontainer.style.zIndex = '-999';
                     document.getElementById("queue-open").innerHTML = "☰";
                 }
             });
@@ -312,6 +319,8 @@
 
         // Get the element with id="defaultOpen" and click on it
         document.getElementById("defaultOpen").click();
+        var electronVersion = process.versions.electron;
+        document.getElementById('electronVersion').textContent = electronVersion;
     </script>
 </body>
 
