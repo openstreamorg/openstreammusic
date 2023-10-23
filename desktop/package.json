@@ -1,13 +1,13 @@
 {
     "name": "openstreammusic",
-    "version": "1.3.0-beta",
+    "version": "1.3.0",
     "description": "Freeing the world of freemium streaming services.",
     "main": "main.js",
     "homepage": "https://openstreamorg.github.io",
     "repository": "https://github.com/openstreamorg/openstreammusic/",
     "scripts": {
         "start": "echo 'You are running OpenStream Music in development mode. Some things may be buggy' && electron .",
-        "build": "electron-builder",
+        "build": "electron-builder -w nsis --ia32 && electron-builder -l deb appimage rpm --x64 && electron-builder -l deb --amd64 --armv7l",
         "install-app-deps": "npm install && npm install electron@27.0.2",
         "install-app-deps-win7": "npm install && npm install electron@22.3.27"
     },

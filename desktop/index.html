@@ -109,7 +109,7 @@
         <div class="navbar-settings">
             <div class="dropdown-menu" id="settings-dropdown">
                 <h3 style="float:left;margin-top:75px;">Settings</h3>
-                <button id="save-settings-button" style="float:right;margin-top:75px;" onclick="updateTheme()">Save</button>
+                <button id="save-settings-button" style="float:right;margin-top:75px;">Save</button>
 
                 <br>
                 <br>
@@ -161,6 +161,9 @@
 
     <script src="./renderer.js"></script>
     <script>
+        function echo(str) {
+            console.log(str);
+        };
         const cycle = document.querySelector("#cycle");
         const main = document.getElementById("main");
         const nav = document.getElementById("nav");
@@ -174,7 +177,7 @@
 
         setTimeout(
             setInterval(cycleText, 2500),
-            4500
+            8000
         );
         const loadingContainer = document.getElementById("loading-container");
         const songsList = document.getElementById("songs-list");
@@ -244,7 +247,7 @@
 
             // Hide the first-run-div
             firstRunDiv.style.display = "none";
-            updateTheme();
+
             // Show or hide other content as needed
             songsList.style.display = "flex";
             titleEl.style.display = "block";
@@ -281,8 +284,8 @@
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
         }
-        const themeToggleRadios = document.querySelectorAll("input[name='theme2']");
-        const themeToggleRadios2 = document.querySelectorAll("input[name='theme']");
+        const themeToggleRadios = document.querySelectorAll("input[name='theme']");
+        const themeToggleRadios2 = document.querySelectorAll("input[name='theme2']");
         const body = document.body;
 
         // Check if the user previously set the dark theme
@@ -291,16 +294,18 @@
         if (isDarkThemeEnabled === "true") {
             themeToggleRadios[1].checked = true;
             themeToggleRadios2[1].checked = true;
-            body.classList.add("dark-theme");
-            localStorage.setItem("darkThemeEnabled", "true");
+            updateTheme("dark"); // Call updateTheme with the selected value
         } else {
             themeToggleRadios[0].checked = true;
             themeToggleRadios2[0].checked = true;
-            localStorage.setItem("darkThemeEnabled", "false");
+            updateTheme("light"); // Call updateTheme with the selected value
         }
 
-        function updateTheme() {
-            if (themeToggleRadios[1].checked || themeToggleRadios2[1].checked) {
+
+        function updateTheme(themeValue) {
+            const body = document.body;
+            echo(themeValue);
+            if (themeValue === "dark") {
                 body.classList.add("dark-theme");
                 localStorage.setItem("darkThemeEnabled", "true");
             } else {
@@ -309,9 +314,9 @@
             }
         }
 
-        for (const radio of themeToggleRadios) {
+        /*for (const radio of themeToggleRadios) {
             radio.addEventListener("change", updateTheme);
-        }
+        }*/
 
         const settingsButton = document.getElementById("settings-button");
         const settingsDropdown = document.getElementById("settings-dropdown");
@@ -375,6 +380,19 @@
         document.getElementById("defaultOpen").click();
         var electronVersion = process.versions.electron;
         document.getElementById('electronVersion').textContent = electronVersion;
+        const themeRadios = document.querySelectorAll("input[name='theme']");
+        const themeRadios2 = document.querySelectorAll("input[name='theme2']");
+
+        themeRadios.forEach((radio) => {
+            radio.addEventListener("change", function() {
+                updateTheme(radio.value);
+            });
+        });
+        themeRadios2.forEach((radio) => {
+            radio.addEventListener("change", function() {
+                updateTheme(radio.value);
+            });
+        });
     </script>
 </body>
 
