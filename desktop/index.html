@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html id="html">
 
 <head>
     <meta charset="UTF-8" />
@@ -34,7 +34,46 @@
         </div>
         <button id="settings-button">⚙</button>
     </nav>
+    <div id="loading-screen">
+        <img src="images/logo.png" style="width:100px;">
+        <br>
+        <span class="loader2"></span> <img src="images/OpenStreamLongLogo.png" style="position:fixed;bottom:12px;height:45px;">
+    </div>
+    <div id="first-run-div" style="display: none; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(238deg, #fd8800aa, #fd008faa, #9700fdaa, #003dfdaa, #05c7e6aa, #4bd58daa); background-size: 300% 300%; -webkit-animation: rainbow 30s ease infinite; animation: rainbow 30s ease infinite;">
+        <!-- Content for the first run div goes here -->
+        <div id="main-firstrun" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; text-align: center; background: white; border-radius: 15px;padding-top:20px;padding-bottom:20px;opacity:1;">
+            <!--<h1>Welcome to OpenStream Music</h1>
+            <p>We're on a mission to free the world from proprietary streaming services.</p>
+            <p>By using OpenStream Music, you support open source software and freedom.</p>
+            <p>Are you ready? Let's go!</p>
+            <button id="lets-go-button">Start</button>-->
+            <img src="./images/LongLogo.png" id='longlogo' style="width:200px;text-align:center;">
+            <div id="welcome" class="tabcontent" style="display:block;">
+                <h3 id="cycle">Welcome!</h3>
+                <p>We are excited that you are here!</p>
+                <p>Click next to get started!</p>
+                <button class="tablinks" onclick="changeTab(event, 'theme')">Next</button>
+            </div>
 
+            <div id="theme" class="tabcontent">
+                <h3>Make it yours.</h3>
+                <p>Make OpenStream Music yours. Choose the theme that you want.</p>
+                <div>
+                    <label>
+                        <input type="radio" name="theme" value="light" checked>Light</label>
+                    <label>
+                        <input type="radio" name="theme" value="dark">Dark</label>
+                </div>
+                <button class="tablinks" onclick="changeTab(event, 'finish')">Next</button>
+            </div>
+
+            <div id="finish" class="tabcontent">
+                <h3>Thanks!</h3>
+                <p>You're now ready to use OpenStream Music. Enjoy!</p>
+                <button id="letsgo-button" class="tablinks">Let's go!</button>
+            </div>
+        </div>
+    </div>
     <main id="main">
         <div id="offline-status">
             <img src="./images/offline.png">
@@ -46,43 +85,6 @@
             <p>Searching...</p>
             <span class="loader"></span>
         </div>
-        <div id="first-run-div" style="display: none; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(238deg, #fd8800aa, #fd008faa, #9700fdaa, #003dfdaa, #05c7e6aa, #4bd58daa); background-size: 300% 300%; -webkit-animation: rainbow 30s ease infinite; animation: rainbow 30s ease infinite;">
-            <!-- Content for the first run div goes here -->
-            <div id="main-firstrun" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; text-align: center; background: white; border-radius: 15px;padding-top:20px;padding-bottom:20px;opacity:1;">
-                <!--<h1>Welcome to OpenStream Music</h1>
-                <p>We're on a mission to free the world from proprietary streaming services.</p>
-                <p>By using OpenStream Music, you support open source software and freedom.</p>
-                <p>Are you ready? Let's go!</p>
-                <button id="lets-go-button">Start</button>-->
-                <img src="./images/LongLogo.png" id='longlogo' style="width:200px;text-align:center;">
-                <div id="welcome" class="tabcontent" style="display:block;">
-                    <h3 id="cycle">Welcome!</h3>
-                    <p>We are excited that you are here!</p>
-                    <p>Click next to get started!</p>
-                    <button class="tablinks" onclick="changeTab(event, 'theme')">Next</button>
-                </div>
-
-                <div id="theme" class="tabcontent">
-                    <h3>Make it yours.</h3>
-                    <p>Make OpenStream Music yours. Choose the theme that you want.</p>
-                    <div>
-                        <label>
-                            <input type="radio" name="theme" value="light" checked">Light</label>
-                        <label>
-                            <input type="radio" name="theme" value="dark">Dark</label>
-                    </div>
-                    <button class="tablinks" onclick="changeTab(event, 'finish')">Next</button>
-                </div>
-
-                <div id="finish" class="tabcontent">
-                    <h3>Thanks!</h3>
-                    <p>You're now ready to use OpenStream Music. Enjoy!</p>
-                    <button id="lets-go-button" class="tablinks">Let's go!</button>
-                </div>
-            </div>
-        </div>
-
-
         <div id="box-shadow">
             <div id="custom-player">
                 <div id="player-controls">
@@ -102,12 +104,12 @@
 
                 </div>
             </div>
-            <button id="queue-open" class="queue-open" style="position:relative;z-index:1;float:right;top:25px;right:5px;" title="Open the song Queue">☰</button>
+            <button id="queue-open" class="queue-open" style="position:relative;z-index:100000;float:right;top:25px;right:5px;" title="Open the song Queue">☰</button>
         </div>
         <div class="navbar-settings">
             <div class="dropdown-menu" id="settings-dropdown">
                 <h3 style="float:left;margin-top:75px;">Settings</h3>
-                <button id="save-settings-button" style="float:right;margin-top:75px;">Save</button>
+                <button id="save-settings-button" style="float:right;margin-top:75px;" onclick="updateTheme()">Save</button>
 
                 <br>
                 <br>
@@ -116,8 +118,10 @@
                 <br>
                 <div>
                     <div class="settings-tab">
-                        <button class="settings-tablinks" onclick="openSettingsTab(event, 'Appearance')" id="defaultOpen"><img src='images/fa-icon/palette-solid.svg' id='fa-icon2'> Appearance</button>
-                        <button class="settings-tablinks" onclick="openSettingsTab(event, 'About')"><img src='images/fa-icon/question-solid.svg' id='fa-icon2'> About</button>
+                        <button class="settings-tablinks" onclick="openSettingsTab(event, 'Appearance')" id="defaultOpen"><img src='images/fa-icon/palette-solid.svg' id='fa-icon2'>
+                            Appearance</button>
+                        <button class="settings-tablinks" onclick="openSettingsTab(event, 'About')"><img
+                                src='images/fa-icon/question-solid.svg' id='fa-icon2'> About</button>
                     </div>
 
                     <div id="Appearance" class="settings-content">
@@ -125,10 +129,12 @@
                         <p>Choose your preferred look for OpenStream Music.</p>
                         <div>
                             <label>
-                                <input type="radio" name="theme2" value="light" title="The default look for OpenStream Music" checked> Light Theme
+                                <input type="radio" name="theme2" value="light"
+                                    title="The default look for OpenStream Music" checked> Light Theme
                             </label>
                             <label>
-                                <input type="radio" name="theme2" value="dark" title="Dark theme is easy on your eyes."> Dark Theme
+                                <input type="radio" name="theme2" value="dark" title="Dark theme is easy on your eyes.">
+                                Dark Theme
                             </label>
                         </div>
                     </div>
@@ -136,9 +142,11 @@
                     <div id="About" class="settings-content">
                         <h3>About</h3>
                         <img src="images/LongLogo.png" style="width:300px;">
-                        <b><p>OpenStream Music<span id="appVersion">1.3.0</span></b>
+                        <b>
+                            <p>OpenStream Music <span id="appVersion" class="span"></span>
+                        </b>
                         </p>
-                        <p>Running on Electron<span id="electronVersion"></span>
+                        <p>Running on Electron <span id="electronVersion" class="span"></span>
                         </p>
                         <p>OpenStream Music is made possible by <a href="https://www.electronjs.org" target="_blank">Electron</a> and <a href="https://nodejs.org" target="_blank">Node.js</a>.
                         </p>
@@ -154,14 +162,20 @@
     <script src="./renderer.js"></script>
     <script>
         const cycle = document.querySelector("#cycle");
+        const main = document.getElementById("main");
+        const nav = document.getElementById("nav");
         let i = 0;
         const welcome = ["Welcome", "Bienvenue", "Bienvenido", "Willkommen", "Benvenuto", "ようこそ", "Добро пожаловать", "欢迎"];
         const cycleText = () => {
             cycle.innerHTML = welcome[i];
             i = ++i % welcome.length;
         };
-        cycleText();
-        setInterval(cycleText, 2500);
+        //cycleText();
+
+        setTimeout(
+            setInterval(cycleText, 2500),
+            4500
+        );
         const loadingContainer = document.getElementById("loading-container");
         const songsList = document.getElementById("songs-list");
         const titleEl = document.getElementById("page-title");
@@ -170,44 +184,82 @@
         const cp = document.getElementById("custom-player");
         const cpc = document.getElementById("custom-player-container");
         const bs = document.getElementById("box-shadow");
+        const letsGoButton = document.getElementById("letsgo-button");
+        const html = document.getElementById("html");
 
         const firstRunDiv = document.getElementById("first-run-div");
         firstRunDiv.style.display = "none";
 
-        if (!localStorage.getItem("firstRun")) {
+        document.addEventListener("DOMContentLoaded", function() {
+            const loadingScreen = document.getElementById("loading-screen");
+
+            // Show the loading screen
+            loadingScreen.classList.add("show");
+            loadingScreen.style.zIndex = "10000";
+            main.style.overflow = 'hidden';
+
+            // Hide the loading screen after 3.5 seconds with a fade-out effect
+            setTimeout(function() {
+                loadingScreen.style.transition = "opacity 0.7s"; // Add transition property
+                loadingScreen.style.opacity = 0;
+                loadingScreen.classList.remove("show");
+                /*main.style.display = "block";
+                nav.style.display = "flex";*/
+                loadingScreen.style.zIndex = "-10000";
+                // Show the main and nav sections after the loading screen fades out
+            }, 4500);
+            main.style.overflow = 'visible';
+        });
+        firstRunDiv.style.display = "none";
+        firstRunDiv.style.zIndex = "-1000";
+        if (!localStorage.getItem("firstRun") || localStorage.getItem("firstrun") == true) {
             // Display the "first-run-div"
-            const firstRunDiv = document.getElementById("first-run-div");
-            firstRunDiv.style.display = "flex"; // Change 'block' to 'flex' to maintain centering
+            firstRunDiv.style.display = "block";
+            firstRunDiv.style.zIndex = "1000";
+            nav.style.display = "none";
             songsList.style.display = "none";
-            titleEl.style.display = "none";
-            loadingContainer.style.display = "none";
             navbar.style.display = "none";
-            search.style.display = "none";
             cp.style.display = "none";
-            cpc.style.display = "none";
             bs.style.display = "none";
-
-            // Set a flag to indicate that it's not the first run
-            localStorage.setItem("firstRun", "true");
-
-            // Add a click event listener to the "Let's Go" button
-            const letsGoButton = document.getElementById("lets-go-button");
-            letsGoButton.addEventListener("click", function() {
-                // Hide the first-run-div
-                firstRunDiv.style.display = "none";
-
-                // Show other content (you can add your logic here)
-                // For example, you can show the main content
-                songsList.style.display = "flex";
-                titleEl.style.display = "block";
-                loadingContainer.style.display = "none";
-                navbar.style.display = "flex";
-                search.style.display = "flex";
-                cp.style.display = "flex";
-                bs.style.display = "block";
-                cpc.style.display = "block";
-            });
+            cpc.style.display = "none";
+            main.style.display = "none";
+        } else {
+            // It's not the first run, so hide the "first-run-div" and show other content
+            songsList.style.display = "flex";
+            titleEl.style.display = "block";
+            //search.style.display = "none";
+            cpc.style.display = "block";
+            loadingContainer.style.display = "none";
+            bs.style.display = "block";
+            main.style.display = "block";
+            nav.style.display = "flex";
+            cp.style.display = "flex";
         }
+
+        // Add a click event listener to the "Let's Go" button
+
+        letsGoButton.addEventListener("click", function() {
+            // Set a flag in localStorage to indicate that it's not the first run
+            localStorage.setItem("firstRun", "false");
+
+            // Hide the first-run-div
+            firstRunDiv.style.display = "none";
+            updateTheme();
+            // Show or hide other content as needed
+            songsList.style.display = "flex";
+            titleEl.style.display = "block";
+            loadingContainer.style.display = "none";
+            navbar.style.display = "flex";
+            cp.style.display = "flex";
+            bs.style.display = "block";
+            cpc.style.display = "block";
+            main.style.display = "block";
+            nav.style.display = "flex";
+            cp.style.display = "flex";
+
+            // You can customize the above code to show or hide any specific elements you want.
+        });
+
 
         function changeTab(evt, tabName) {
             // Declare all variables
@@ -240,13 +292,15 @@
             themeToggleRadios[1].checked = true;
             themeToggleRadios2[1].checked = true;
             body.classList.add("dark-theme");
+            localStorage.setItem("darkThemeEnabled", "true");
         } else {
             themeToggleRadios[0].checked = true;
             themeToggleRadios2[0].checked = true;
+            localStorage.setItem("darkThemeEnabled", "false");
         }
 
         function updateTheme() {
-            if (themeToggleRadios[1].checked) {
+            if (themeToggleRadios[1].checked || themeToggleRadios2[1].checked) {
                 body.classList.add("dark-theme");
                 localStorage.setItem("darkThemeEnabled", "true");
             } else {

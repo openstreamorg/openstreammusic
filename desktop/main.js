@@ -29,6 +29,9 @@ function createWindow() {
             slashes: true,
         })
     );
+    let contents = mainWindow.webContents;
+    let appversion = app.getVersion();
+    contents.insertCSS(`#appVersion:before { content: "${appversion}"; }`);
 
     mainWindow.on("closed", function() {
         mainWindow = null;

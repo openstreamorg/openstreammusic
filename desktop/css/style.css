@@ -736,6 +736,10 @@ span {
     margin: 0 10px;
 }
 
+.span {
+    margin: 0;
+}
+
 #queue-open {
     background-color: #f2f2f2;
     color: black;

@@ -1,6 +1,6 @@
 {
     "name": "openstreammusic",
-    "version": "1.3.0",
+    "version": "1.3.0-beta",
     "description": "Freeing the world of freemium streaming services.",
     "main": "main.js",
     "homepage": "https://openstreamorg.github.io",

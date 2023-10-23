@@ -332,7 +332,6 @@ function playNextSong() {
     if (songQueue.length > 0) {
         removeSongFromQueue(0);
         const nextSong = songQueue.shift();
-        console.log(nextSong)
         customPlayer.src = nextSong.mp3Url;
         updateSongInfo(nextSong);
         customPlayer.play(); // Play the next song immediately
