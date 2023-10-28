@@ -49,6 +49,7 @@ function updateOnlineStatus() {
         songsList.style.display = "flex";
         titleEl.style.display = "block";
         loadingContainer.style.display = "none";
+        api.initalize();
     } else {
         // User is offline, hide the online status and show the offline status
         document.getElementById("offline-status").style.display = "block";
@@ -277,7 +278,6 @@ async function getUrl(id) {
     return format.url;
 }
 
-api.initalize()
 async function searchMusic(query) {
     try {
         showLoadingAnimation();
@@ -304,16 +304,31 @@ async function searchMusic(query) {
     }
 }
 
-fetch("https://raw.githubusercontent.com/openstreamorg/openstreammusic-data/main/songs.json")
-    .then((response) => response.json())
-    .then((data) => {
-        allSongs = data.songs;
-        allSongs.forEach((song) => {
-            const audio = new Audio(song.mp3Url);
-            audio.preload = "auto";
-        });
-        showSongs(allSongs); // Call showSongs with the original JSON data
-    });
+function onlineChecks() {
+    if (navigator.onLine) {
+        fetch("https://raw.githubusercontent.com/openstreamorg/openstreammusic-data/main/songs.json")
+            .then((response) => response.json())
+            .then((data) => {
+                allSongs = data.songs;
+                allSongs.forEach((song) => {
+                    const audio = new Audio(song.mp3Url);
+                    audio.preload = "auto";
+                });
+                // Call showSongs with the loaded data
+                showSongs(allSongs);
+                api.initalize();
+            })
+            .catch((error) => {
+                console.error("Error loading songs:", error);
+                hideLoadingAnimation(); // Ensure loading animation is hidden in case of an error
+            });
+    } else {
+        updateOnlineStatus();
+    }
+}
+onlineChecks();
+window.addEventListener("online", onlineChecks);
+window.addEventListener("offline", onlineChecks);
 
 const customPlayerDiv = document.createElement("div");
 customPlayerDiv.id = "custom-player-container";

@@ -40,7 +40,7 @@ function createWindow() {
 
 app.on("ready", () => {
     createWindow();
-
+    /*
     https.get(
         "https://raw.githubusercontent.com/openstreamorg/openstreammusic-data/main/songs.json",
         (res) => {
@@ -55,7 +55,7 @@ app.on("ready", () => {
                 mainWindow.webContents.send("songs", songs);
             });
         }
-    );
+    );*/
 });
 
 app.on("window-all-closed", function() {

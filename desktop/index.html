@@ -75,9 +75,11 @@
         </div>
     </div>
     <main id="main">
-        <div id="offline-status">
-            <img src="./images/offline.png">
-            <h3>Cannot connect to internet.</h3>
+        <div id="offline-status-container">
+            <div id="offline-status">
+                <img src="./images/offline.png">
+                <h3>Cannot connect to internet.</h3>
+            </div>
         </div>
         <h1 id="page-title" style="font-weight:bold;"></h1>
         <div id="songs-list"></div>
@@ -330,8 +332,6 @@
         });
 
         saveSettingsButton.addEventListener("click", function() {
-            updateTheme();
-
             // Hide the settings dropdown
             settingsDropdown.style.display = "none";
             songsList.style.display = "flex";
