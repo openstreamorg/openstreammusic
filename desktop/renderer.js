@@ -83,12 +83,9 @@ function hideLoadingAnimation() {
     const loadingContainer = document.getElementById("loading-container");
     const songsList = document.getElementById("songs-list");
     const titleEl = document.getElementById("page-title");
-
-    setTimeout(function() {
-        songsList.style.display = "flex";
-        titleEl.style.display = "block";
-        loadingContainer.style.display = "none";
-    }, 4000); // 3000 milliseconds (3 seconds)
+    songsList.style.display = "flex";
+    titleEl.style.display = "block";
+    loadingContainer.style.display = "none";
 }
 
 
@@ -159,24 +156,7 @@ function showSongs(songs) {
         songDiv.appendChild(bree);
 
         songDiv.addEventListener("click", function() {
-            if (currentlyPlaying) {
-                currentlyPlaying.pause();
-                currentlyPlaying.classList.remove("playing");
-            }
-
-            customPlayer.pause();
-            customPlayer.currentTime = 0;
-            customPlayer.src = song.mp3Url;
-
-            customPlayer.play();
-            currentlyPlaying = customPlayer;
-
-            const songNameEl = document.getElementById("song-name");
-            const artistNameEl = document.getElementById("artist-name");
-            const albumCoverEl = document.getElementById("player-album-cover");
-            songNameEl.innerText = song.name;
-            artistNameEl.innerText = song.artist;
-            albumCoverEl.src = song.coverUrl;
+            playSong(song); // Use the new playSong function
         });
 
         songDiv.addEventListener("contextmenu", function(event) {
@@ -188,43 +168,66 @@ function showSongs(songs) {
             const playButton = document.createElement("button");
             playButton.innerText = "▶\t\t\tPlay";
             playButton.addEventListener("click", function() {
-                customPlayer.pause();
-                customPlayer.currentTime = 0;
-                customPlayer.src = song.mp3Url;
-                customPlayer.play();
-                currentlyPlaying = customPlayer;
-
-                updateSongInfo(song);
+                playSong(song); // Use the new playSong function
 
                 menu.remove();
             });
 
             menu.appendChild(playButton);
 
-            // Find the index of the song in the queue
-            const songIndexInQueue = songQueue.findIndex((queuedSong) => queuedSong.mp3Url === song.mp3Url);
-
-            if (songIndexInQueue !== -1) {
-                // If the song is already in the queue, provide the option to remove it
-                const removeFromQueueButton = document.createElement("button");
-                removeFromQueueButton.innerText = "🗑️\t\t\tRemove from Queue";
-                removeFromQueueButton.addEventListener("click", function() {
-                    // Remove the song from the queue using its index
-                    songQueue.splice(songIndexInQueue, 1);
-                    displaySongQueue(); // Refresh the queue display
-                    menu.remove();
-                });
-                menu.appendChild(removeFromQueueButton);
+            if (song.mp3Url) {
+                // If the song has an mp3Url, play it directly
+                const songIndexInQueue = songQueue.findIndex((queuedSong) => queuedSong.mp3Url === song.mp3Url);
+                if (songIndexInQueue !== -1) {
+                    // If the song is already in the queue, provide the option to remove it
+                    const removeFromQueueButton = document.createElement("button");
+                    removeFromQueueButton.innerText = "🗑️\t\t\tRemove from Queue";
+                    removeFromQueueButton.addEventListener("click", function() {
+                        // Remove the song from the queue using its index
+                        songQueue.splice(songIndexInQueue, 1);
+                        displaySongQueue(); // Refresh the queue display
+                        menu.remove();
+                    });
+                    menu.appendChild(removeFromQueueButton);
+                } else {
+                    // If the song is not in the queue, provide the option to add it
+                    const playNextButton = document.createElement("button");
+                    playNextButton.innerText = "☰\t\t\tAdd to Queue";
+                    playNextButton.addEventListener("click", function() {
+                        addSongToQueue(song);
+                        menu.remove();
+                    });
+                    menu.appendChild(playNextButton);
+                }
+            } else if (song.videoId) {
+                const songIndexInQueue = songQueue.findIndex((queuedSong) => queuedSong.videoId === song.videoId);
+                if (songIndexInQueue !== -1) {
+                    // If the song is already in the queue, provide the option to remove it
+                    const removeFromQueueButton = document.createElement("button");
+                    removeFromQueueButton.innerText = "🗑️\t\t\tRemove from Queue";
+                    removeFromQueueButton.addEventListener("click", function() {
+                        // Remove the song from the queue using its index
+                        songQueue.splice(songIndexInQueue, 1);
+                        displaySongQueue(); // Refresh the queue display
+                        menu.remove();
+                    });
+                    menu.appendChild(removeFromQueueButton);
+                } else {
+                    // If the song is not in the queue, provide the option to add it
+                    const playNextButton = document.createElement("button");
+                    playNextButton.innerText = "☰\t\t\tAdd to Queue";
+                    playNextButton.addEventListener("click", function() {
+                        addSongToQueue(song);
+                        menu.remove();
+                    });
+                    menu.appendChild(playNextButton);
+                }
             } else {
-                // If the song is not in the queue, provide the option to add it
-                const playNextButton = document.createElement("button");
-                playNextButton.innerText = "☰\t\t\tAdd to Queue";
-                playNextButton.addEventListener("click", function() {
-                    addSongToQueue(song);
-                    menu.remove();
-                });
-                menu.appendChild(playNextButton);
+                console.error("Invalid song format. It must have either mp3Url or videoId.");
             }
+            // Find the index of the song in the queue
+            const songVideoUrl = songQueue.findIndex((queuedSong) => queuedSong.videoId === song.videoId);
+
 
             const breakx = document.createElement("br");
             menu.appendChild(breakx);
@@ -248,9 +251,9 @@ function showSongs(songs) {
             };
             window.addEventListener("click", removeMenu);
         });
-
     });
 }
+
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -285,19 +288,18 @@ async function searchMusic(query) {
         const songs = results.content
             .filter(item => item.type === 'song')
             .map(async item => {
-                const mp3Url = await getUrl(item.videoId);
                 return {
                     name: item.name,
                     artist: item.artist.name,
                     coverUrl: item.thumbnails[1].url,
-                    mp3Url: mp3Url,
+                    videoId: item.videoId,
                 };
             });
         // Handle promises with Promise.all
         Promise.all(songs).then(songArray => {
             showSongs(songArray);
         });
-        setTimeout(hideLoadingAnimation(), 3000);
+        hideLoadingAnimation()
     } catch (error) {
         console.error("Error searching music:", error);
         hideLoadingAnimation();
@@ -347,25 +349,17 @@ function playNextSong() {
     if (songQueue.length > 0) {
         removeSongFromQueue(0);
         const nextSong = songQueue.shift();
-        customPlayer.src = nextSong.mp3Url;
-        updateSongInfo(nextSong);
-        customPlayer.play(); // Play the next song immediately
-        currentlyPlaying = customPlayer;
+        playSong(nextSong); // Use the playSong function to play the next song
         displaySongQueue();
     } else {
         const shuffledSongs = shuffleArray(allSongs);
         const randomSong = shuffledSongs[0];
-        customPlayer.src = randomSong.mp3Url;
-        customPlayer.play();
-        updateSongInfo({
-            coverUrl: randomSong.coverUrl,
-            name: randomSong.name,
-            artist: randomSong.artist,
-        });
+        playSong(randomSong); // Use the playSong function to play a random song
         displaySongQueue();
     }
 }
 
+/*
 function updateSongInfo(song) {
     const songName = document.getElementById("song-name");
     const artistName = document.getElementById("artist-name");
@@ -373,7 +367,7 @@ function updateSongInfo(song) {
     songName.textContent = song.name;
     artistName.textContent = song.artist;
     albumCover.src = song.coverUrl;
-}
+}*/
 
 
 
@@ -400,7 +394,7 @@ searchInput.addEventListener("keypress", function(event) {
 });
 searchInput.addEventListener("input", function(event) {
     const searchQuery = event.target.value.trim();
-    if (searchQuery.length = 0) {
+    if (searchQuery.length === 0) {
         showSongs(allSongs);
     }
 });
@@ -483,9 +477,41 @@ function addSongToQueue(song) {
     if (isFirstSong) {
         // If it's the first song in the queue, start playing it
         isFirstPlay = false;
+        playSong(song); // Use the new playSong function
+    }
+}
+
+async function playSong(song) {
+    if (currentlyPlaying) {
+        currentlyPlaying.pause();
+        currentlyPlaying.classList.remove("playing");
+    }
+
+    customPlayer.pause();
+    customPlayer.currentTime = 0;
+    const songNameEl = document.getElementById("song-name");
+    const artistNameEl = document.getElementById("artist-name");
+    const albumCoverEl = document.getElementById("player-album-cover");
+    songNameEl.innerText = song.name;
+    artistNameEl.innerText = song.artist;
+    albumCoverEl.src = song.coverUrl;
+
+    if (song.mp3Url) {
+        // If the song has an mp3Url, play it directly
         customPlayer.src = song.mp3Url;
         customPlayer.play();
         currentlyPlaying = customPlayer;
-        updateSongInfo(song);
+    } else if (song.videoId) {
+        // If the song has a videoId, convert it to a URL and play it
+        try {
+            const mp3Url = await getUrl(song.videoId);
+            customPlayer.src = mp3Url;
+            customPlayer.play();
+            currentlyPlaying = customPlayer;
+        } catch (error) {
+            console.error("Error getting mp3Url for the song:", error);
+        }
+    } else {
+        console.error("Invalid song format. It must have either mp3Url or videoId.");
     }
 }
