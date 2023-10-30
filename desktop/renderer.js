@@ -8,10 +8,12 @@ const searchButton = document.getElementById("search-button");
 
 let songQueue = [];
 let isFirstPlay = true; // Add this variable to track the first play
-
+let favorites = []; // Initialize the favorites array here
 hideLoadingAnimation();
 
 const songQueueElement = document.getElementById("song-queue");
+
+initializeFavorites();
 
 // Clear the existing content
 songQueueElement.innerHTML = "";
@@ -86,6 +88,194 @@ function hideLoadingAnimation() {
     songsList.style.display = "flex";
     titleEl.style.display = "block";
     loadingContainer.style.display = "none";
+}
+
+// Function to set a cookie for favorites
+function setFavoritesCookie() {
+    try {
+        const jsonFavorites = JSON.stringify(favorites);
+        localStorage.setItem("favorites", jsonFavorites);
+    } catch (error) {
+        console.error("Error setting favorites cookie:", error);
+    }
+}
+
+// Function to read favorites from the cookie
+function getFavoritesFromCookie() {
+    try {
+        const cookies = localStorage.getItem("favorites");
+        if (cookies) {
+            favorites = JSON.parse(cookies);
+            displayFavorites(favorites); // Refresh the favorites display
+        }
+        const titleEl = document.getElementById("page-title");
+        titleEl.innerText = "Your Favourites";
+    } catch (error) {
+        console.error("Error reading favorites from cookie:", error);
+    }
+}
+
+// Function to add a song to favorites
+function addToFavorites(song) {
+    favorites.push(song);
+    setFavoritesCookie(); // Update the cookie
+}
+
+// Function to remove a song from favorites
+function removeFromFavorites(song) {
+    const songIndex = favorites.findIndex((favorite) => favorite.id === song.id);
+    if (songIndex !== -1) {
+        favorites.splice(songIndex, 1);
+        displayFavorites(); // Refresh the favorites display
+        setFavoritesCookie(); // Update the cookie
+    }
+}
+
+// Function to display favorites
+function displayFavorites(songs) {
+    const songsList = document.getElementById("songs-list");
+    songsList.innerHTML = "";
+    title();
+
+    if (songs) { // Check if songs are provided
+        songs.forEach((song) => {
+            const songDiv = document.createElement("div");
+            songDiv.classList.add("song");
+
+            const coverImg = document.createElement("img");
+            coverImg.src = song.coverUrl;
+            coverImg.classList.add("cover");
+            const bree = document.createElement("br");
+            songDiv.classList.add("bree");
+            const songInfo = document.createElement("div");
+            songInfo.classList.add("song-info");
+
+            const songName = document.createElement("div");
+            songName.innerText = song.name;
+            songName.classList.add("song-name");
+
+            const artistName = document.createElement("div");
+            artistName.innerText = song.artist;
+            artistName.classList.add("artist-name");
+
+            songDiv.appendChild(coverImg);
+            songInfo.appendChild(songName);
+            songInfo.appendChild(artistName);
+            songDiv.appendChild(songInfo);
+            songsList.appendChild(songDiv);
+            songDiv.appendChild(bree);
+            songDiv.appendChild(bree);
+            songDiv.appendChild(bree);
+
+            songDiv.addEventListener("click", function() {
+                playSong(song);
+            });
+
+            songDiv.addEventListener("contextmenu", function(event) {
+                event.preventDefault();
+
+                const menu = document.createElement("div");
+                menu.classList.add("right-click-menu");
+
+                const playButton = document.createElement("button");
+                playButton.innerText = "▶\t\t\tPlay";
+                playButton.addEventListener("click", function() {
+                    playSong(song);
+                    menu.remove();
+                });
+
+                menu.appendChild(playButton);
+
+                const removeFromFavoritesButton = document.createElement("button");
+                removeFromFavoritesButton.innerText = "★\t\t\tRemove from Favorites";
+                removeFromFavoritesButton.addEventListener("click", function() {
+                    removeFromFavorites(song);
+                    menu.remove();
+                });
+                menu.appendChild(removeFromFavoritesButton);
+
+                if (song.mp3Url) {
+                    // If the song has an mp3Url, play it directly
+                    const songIndexInQueue = songQueue.findIndex((queuedSong) => queuedSong.mp3Url === song.mp3Url);
+                    if (songIndexInQueue !== -1) {
+                        // If the song is already in the queue, provide the option to remove it
+                        const removeFromQueueButton = document.createElement("button");
+                        removeFromQueueButton.innerText = "🗑️\t\t\tRemove from Queue";
+                        removeFromQueueButton.addEventListener("click", function() {
+                            // Remove the song from the queue using its index
+                            songQueue.splice(songIndexInQueue, 1);
+                            displaySongQueue(); // Refresh the queue display
+                            menu.remove();
+                        });
+                        menu.appendChild(removeFromQueueButton);
+                    } else {
+                        // If the song is not in the queue, provide the option to add it
+                        const playNextButton = document.createElement("button");
+                        playNextButton.innerText = "☰\t\t\tAdd to Queue";
+                        playNextButton.addEventListener("click", function() {
+                            addSongToQueue(song);
+                            menu.remove();
+                        });
+                        menu.appendChild(playNextButton);
+                    }
+                } else if (song.videoId) {
+                    const songIndexInQueue = songQueue.findIndex((queuedSong) => queuedSong.videoId === song.videoId);
+                    if (songIndexInQueue !== -1) {
+                        // If the song is already in the queue, provide the option to remove it
+                        const removeFromQueueButton = document.createElement("button");
+                        removeFromQueueButton.innerText = "🗑️\t\t\tRemove from Queue";
+                        removeFromQueueButton.addEventListener("click", function() {
+                            // Remove the song from the queue using its index
+                            songQueue.splice(songIndexInQueue, 1);
+                            displaySongQueue(); // Refresh the queue display
+                            menu.remove();
+                        });
+                        menu.appendChild(removeFromQueueButton);
+                    } else {
+                        // If the song is not in the queue, provide the option to add it
+                        const playNextButton = document.createElement("button");
+                        playNextButton.innerText = "☰\t\t\tAdd to Queue";
+                        playNextButton.addEventListener("click", function() {
+                            addSongToQueue(song);
+                            menu.remove();
+                        });
+                        menu.appendChild(playNextButton);
+                    }
+                } else {
+                    console.error("Invalid song format. It must have either mp3Url or videoId.");
+                }
+
+                const breakx = document.createElement("br");
+                menu.appendChild(breakx);
+                const addToPlaylistButton = document.createElement("button");
+                addToPlaylistButton.innerText = "Add to Playlist";
+                addToPlaylistButton.addEventListener("click", function() {
+                    addToPlaylist(song);
+                    menu.remove();
+                });
+
+                menu.style.position = "fixed";
+                menu.style.top = event.clientY + "px";
+                menu.style.left = event.clientX + "px";
+
+                document.body.appendChild(menu);
+
+                const removeMenu = function() {
+                    menu.remove();
+                    window.removeEventListener("click", removeMenu);
+                };
+                window.addEventListener("click", removeMenu);
+            });
+        });
+    }
+}
+
+// Function to initialize favorites from the cookie
+function initializeFavorites() {
+    getFavoritesFromCookie(); // Initialize favorites from the cookie
+    // Display favorites initially
+    displayFavorites(favorites);
+    // Other initialization code
 }
 
 
@@ -175,6 +365,14 @@ function showSongs(songs) {
 
             menu.appendChild(playButton);
 
+            const addToFavoritesButton = document.createElement("button");
+            addToFavoritesButton.innerText = "★\t\t\tAdd to Favorites";
+            addToFavoritesButton.addEventListener("click", function() {
+                addToFavorites(song); // Use the addToFavorites function to add the song to favorites
+
+                menu.remove();
+            });
+            menu.appendChild(addToFavoritesButton);
             if (song.mp3Url) {
                 // If the song has an mp3Url, play it directly
                 const songIndexInQueue = songQueue.findIndex((queuedSong) => queuedSong.mp3Url === song.mp3Url);
@@ -254,6 +452,155 @@ function showSongs(songs) {
     });
 }
 
+function displaySongs(songs) {
+    const songsList = document.getElementById("songs-list");
+    songsList.innerHTML = "";
+    title();
+
+    // Initialize searchInput before using it
+    const searchInput = document.getElementById("search-input");
+    const searchInputValue = searchInput.value.trim();
+
+    if (!songs || searchInputValue.length === 0) {
+        const shuffledSongs = shuffleArray(allSongs);
+        songs = shuffledSongs.slice(0, 15);
+    }
+
+    songs.forEach((song) => {
+        const songDiv = document.createElement("div");
+        songDiv.classList.add("song");
+
+        const coverImg = document.createElement("img");
+        coverImg.src = song.coverUrl;
+        coverImg.classList.add("cover");
+        const bree = document.createElement("br");
+        songDiv.classList.add("bree");
+        const songInfo = document.createElement("div");
+        songInfo.classList.add("song-info");
+
+        const songName = document.createElement("div");
+        songName.innerText = song.name;
+        songName.classList.add("song-name");
+
+        const artistName = document.createElement("div");
+        artistName.innerText = song.artist;
+        artistName.classList.add("artist-name");
+
+        songDiv.appendChild(coverImg);
+        songInfo.appendChild(songName);
+        songInfo.appendChild(artistName);
+        songDiv.appendChild(songInfo);
+        songsList.appendChild(songDiv);
+        songDiv.appendChild(bree);
+        songDiv.appendChild(bree);
+        songDiv.appendChild(bree);
+
+        songDiv.addEventListener("click", function() {
+            playSong(song); // Use the new playSong function
+        });
+
+        songDiv.addEventListener("contextmenu", function(event) {
+            event.preventDefault();
+
+            const menu = document.createElement("div");
+            menu.classList.add("right-click-menu");
+
+            const playButton = document.createElement("button");
+            playButton.innerText = "▶\t\t\tPlay";
+            playButton.addEventListener("click", function() {
+                playSong(song); // Use the new playSong function
+
+                menu.remove();
+            });
+
+            menu.appendChild(playButton);
+
+            const addToFavoritesButton = document.createElement("button");
+            addToFavoritesButton.innerText = "★\t\t\tAdd to Favorites";
+            addToFavoritesButton.addEventListener("click", function() {
+                addToFavorites(song); // Use the addToFavorites function to add the song to favorites
+
+                menu.remove();
+            });
+            menu.appendChild(addToFavoritesButton);
+            if (song.mp3Url) {
+                // If the song has an mp3Url, play it directly
+                const songIndexInQueue = songQueue.findIndex((queuedSong) => queuedSong.mp3Url === song.mp3Url);
+                if (songIndexInQueue !== -1) {
+                    // If the song is already in the queue, provide the option to remove it
+                    const removeFromQueueButton = document.createElement("button");
+                    removeFromQueueButton.innerText = "🗑️\t\t\tRemove from Queue";
+                    removeFromQueueButton.addEventListener("click", function() {
+                        // Remove the song from the queue using its index
+                        songQueue.splice(songIndexInQueue, 1);
+                        displaySongQueue(); // Refresh the queue display
+                        menu.remove();
+                    });
+                    menu.appendChild(removeFromQueueButton);
+                } else {
+                    // If the song is not in the queue, provide the option to add it
+                    const playNextButton = document.createElement("button");
+                    playNextButton.innerText = "☰\t\t\tAdd to Queue";
+                    playNextButton.addEventListener("click", function() {
+                        addSongToQueue(song);
+                        menu.remove();
+                    });
+                    menu.appendChild(playNextButton);
+                }
+            } else if (song.videoId) {
+                const songIndexInQueue = songQueue.findIndex((queuedSong) => queuedSong.videoId === song.videoId);
+                if (songIndexInQueue !== -1) {
+                    // If the song is already in the queue, provide the option to remove it
+                    const removeFromQueueButton = document.createElement("button");
+                    removeFromQueueButton.innerText = "🗑️\t\t\tRemove from Queue";
+                    removeFromQueueButton.addEventListener("click", function() {
+                        // Remove the song from the queue using its index
+                        songQueue.splice(songIndexInQueue, 1);
+                        displaySongQueue(); // Refresh the queue display
+                        menu.remove();
+                    });
+                    menu.appendChild(removeFromQueueButton);
+                } else {
+                    // If the song is not in the queue, provide the option to add it
+                    const playNextButton = document.createElement("button");
+                    playNextButton.innerText = "☰\t\t\tAdd to Queue";
+                    playNextButton.addEventListener("click", function() {
+                        addSongToQueue(song);
+                        menu.remove();
+                    });
+                    menu.appendChild(playNextButton);
+                }
+            } else {
+                console.error("Invalid song format. It must have either mp3Url or videoId.");
+            }
+            // Find the index of the song in the queue
+            const songVideoUrl = songQueue.findIndex((queuedSong) => queuedSong.videoId === song.videoId);
+
+
+            const breakx = document.createElement("br");
+            menu.appendChild(breakx);
+            const addToPlaylistButton = document.createElement("button");
+            addToPlaylistButton.innerText = "Add to Playlist";
+            addToPlaylistButton.addEventListener("click", function() {
+                addToPlaylist(song);
+
+                menu.remove();
+            });
+
+            menu.style.position = "fixed";
+            menu.style.top = event.clientY + "px";
+            menu.style.left = event.clientX + "px";
+
+            document.body.appendChild(menu);
+
+            const removeMenu = function() {
+                menu.remove();
+                window.removeEventListener("click", removeMenu);
+            };
+            window.addEventListener("click", removeMenu);
+        });
+    });
+}
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -285,6 +632,7 @@ async function searchMusic(query) {
     try {
         showLoadingAnimation();
         const results = await api.search(query);
+        console.log(results);
         const songs = results.content
             .filter(item => item.type === 'song')
             .map(async item => {
@@ -306,6 +654,8 @@ async function searchMusic(query) {
     }
 }
 
+
+// Add this at the end of the onlineChecks function
 function onlineChecks() {
     if (navigator.onLine) {
         fetch("https://raw.githubusercontent.com/openstreamorg/openstreammusic-data/main/songs.json")
@@ -316,8 +666,10 @@ function onlineChecks() {
                     const audio = new Audio(song.mp3Url);
                     audio.preload = "auto";
                 });
-                // Call showSongs with the loaded data
-                showSongs(allSongs);
+
+                // Initialize favorites from the cookie and display them
+                getFavoritesFromCookie();
+
                 api.initalize();
             })
             .catch((error) => {
@@ -328,6 +680,7 @@ function onlineChecks() {
         updateOnlineStatus();
     }
 }
+
 onlineChecks();
 window.addEventListener("online", onlineChecks);
 window.addEventListener("offline", onlineChecks);

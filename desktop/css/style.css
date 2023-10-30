@@ -423,7 +423,7 @@ img {
 .right-click-menu {
     background-color: #ffffff;
     width: 220px;
-    height: 100px;
+    height: 150px;
     padding-top: 10px;
     text-align: center;
     box-shadow: -5px 5px 10px #00000099;
@@ -441,7 +441,8 @@ img {
     border-radius: 11px;
 }
 
-.right-click-menu button:nth-child(2) {
+.right-click-menu button:nth-child(2),
+.right-click-menu button:nth-child(3) {
     width: 202px;
     height: 40px;
     border: none;
