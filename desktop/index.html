@@ -39,7 +39,7 @@
         <br>
         <span class="loader2"></span> <img src="images/OpenStreamLongLogo.png" style="position:fixed;bottom:12px;height:45px;">
     </div>
-    <div id="first-run-div" style="display: none; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(238deg, #fd8800aa, #fd008faa, #9700fdaa, #003dfdaa, #05c7e6aa, #4bd58daa); background-size: 300% 300%; -webkit-animation: rainbow 30s ease infinite; animation: rainbow 30s ease infinite;">
+    <div id="first-run-div" style="display: none; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(238deg, #fd8800, #fd008f, #9700fd, #003dfd, #05c7e6, #4bd58d); background-size: 300% 300%; -webkit-animation: rainbow 30s ease infinite; animation: rainbow 30s ease infinite;">
         <!-- Content for the first run div goes here -->
         <div id="main-firstrun" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; text-align: center; background: white; border-radius: 15px;padding-top:20px;padding-bottom:20px;opacity:1;">
             <!--<h1>Welcome to OpenStream Music</h1>
@@ -187,11 +187,10 @@
         const navbar = document.getElementById("nav");
         const search = document.getElementById("search");
         const cp = document.getElementById("custom-player");
-        const cpc = document.getElementById("custom-player-container");
         const bs = document.getElementById("box-shadow");
         const letsGoButton = document.getElementById("letsgo-button");
         const html = document.getElementById("html");
-
+        // cp.style.display = "none";
         const firstRunDiv = document.getElementById("first-run-div");
         firstRunDiv.style.display = "none";
 
@@ -226,14 +225,12 @@
             navbar.style.display = "none";
             cp.style.display = "none";
             bs.style.display = "none";
-            cpc.style.display = "none";
             main.style.display = "none";
         } else {
             // It's not the first run, so hide the "first-run-div" and show other content
             songsList.style.display = "flex";
             titleEl.style.display = "block";
             //search.style.display = "none";
-            // cpc.style.display = "block";
             loadingContainer.style.display = "none";
             bs.style.display = "block";
             main.style.display = "block";
@@ -257,12 +254,9 @@
             navbar.style.display = "flex";
             cp.style.display = "flex";
             bs.style.display = "block";
-            cpc.style.display = "block";
             main.style.display = "block";
             nav.style.display = "flex";
             cp.style.display = "flex";
-
-            // You can customize the above code to show or hide any specific elements you want.
         });
 
 
