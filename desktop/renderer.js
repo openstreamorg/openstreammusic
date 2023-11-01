@@ -1,5 +1,5 @@
 // Import the YouTube Music API module
-const YoutubeMusicApi = require('youtube-music-api');
+const YoutubeMusicApi = require('ytm-get-api');
 const api = new YoutubeMusicApi();
 const ytdl = require('ytdl-core');
 
@@ -631,6 +631,7 @@ async function getUrl(id) {
 async function searchMusic(query) {
     try {
         showLoadingAnimation();
+        api.initalize();
         const results = await api.search(query);
         console.log(results);
         const songs = results.content
@@ -643,17 +644,17 @@ async function searchMusic(query) {
                     videoId: item.videoId,
                 };
             });
-        // Handle promises with Promise.all
-        Promise.all(songs).then(songArray => {
-            showSongs(songArray);
-        });
-        hideLoadingAnimation()
+
+        // Use Promise.all with async/await to wait for all promises to resolve
+        const songArray = await Promise.all(songs);
+        console.log(songArray);
+        showSongs(songArray);
+        hideLoadingAnimation();
     } catch (error) {
         console.error("Error searching music:", error);
         hideLoadingAnimation();
     }
 }
-
 
 // Add this at the end of the onlineChecks function
 function onlineChecks() {
