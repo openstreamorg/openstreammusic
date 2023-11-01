@@ -631,30 +631,54 @@ async function getUrl(id) {
 async function searchMusic(query) {
     try {
         showLoadingAnimation();
+
+        // Search the API
         api.initalize();
-        const results = await api.search(query);
-        console.log(results);
-        const songs = results.content
+        const apiResults = await api.search(query);
+
+        // Filter and process API results
+        const apiSongs = apiResults.content
             .filter(item => item.type === 'song')
-            .map(async item => {
+            .map(item => {
                 return {
                     name: item.name,
                     artist: item.artist.name,
                     coverUrl: item.thumbnails[1].url,
-                    videoId: item.videoId,
+                    mp3Url: item.mp3Url, // Include mp3Url from the API
                 };
             });
 
-        // Use Promise.all with async/await to wait for all promises to resolve
-        const songArray = await Promise.all(songs);
-        console.log(songArray);
-        showSongs(songArray);
+        // Fetch the JSON data from your local file
+        const response = await fetch("https://raw.githubusercontent.com/openstreamorg/openstreammusic-data/main/songs.json");
+        if (!response.ok) {
+            throw new Error("Failed to fetch JSON data.");
+        }
+
+        const data = await response.json();
+
+        // Filter the songs based on the query from the JSON file
+        const jsonSongs = data.songs
+            .filter(item => item.type === 'song' && item.name.toLowerCase().includes(query.toLowerCase()))
+            .map(item => {
+                return {
+                    name: item.name,
+                    artist: item.artist.name,
+                    coverUrl: item.thumbnails[1].url,
+                    mp3Url: item.mp3Url, // Include mp3Url from the JSON file
+                };
+            });
+
+        // Combine results from both sources
+        const combinedResults = [...apiSongs, ...jsonSongs];
+
+        showSongs(combinedResults);
         hideLoadingAnimation();
     } catch (error) {
         console.error("Error searching music:", error);
         hideLoadingAnimation();
     }
 }
+
 
 // Add this at the end of the onlineChecks function
 function onlineChecks() {
