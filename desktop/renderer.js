@@ -1,8 +1,7 @@
-// Import the YouTube Music API module
 const YoutubeMusicApi = require('ytm-get-api');
 const api = new YoutubeMusicApi();
-const ytdl = require('ytdl-core');
 
+// Import the YouTube Music API module
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
 
@@ -51,7 +50,6 @@ function updateOnlineStatus() {
         songsList.style.display = "flex";
         titleEl.style.display = "block";
         loadingContainer.style.display = "none";
-        api.initalize();
     } else {
         // User is offline, hide the online status and show the offline status
         document.getElementById("offline-status").style.display = "block";
@@ -623,6 +621,7 @@ function title() {
 
 async function getUrl(id) {
     let url = "http://www.youtube.com/watch?v=" + id;
+    const ytdl = require('ytdl-core');
     let e = await ytdl.getInfo(url);
     let format = ytdl.chooseFormat(e.formats, { quality: 'highestaudio', filter: 'audioonly' });
     return format.url;
@@ -631,7 +630,6 @@ async function getUrl(id) {
 async function searchMusic(query) {
     try {
         showLoadingAnimation();
-
         // Search the API
         api.initalize();
         const apiResults = await api.search(query);

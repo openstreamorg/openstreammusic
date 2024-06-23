@@ -2,8 +2,6 @@ const { app, BrowserWindow, ipcMain, Menu } = require("electron");
 const path = require("path");
 const url = require("url");
 const https = require("https");
-const YoutubeMusicApi = require('ytm-get-api');
-const api = new YoutubeMusicApi();
 
 let mainWindow;
 
@@ -56,6 +54,11 @@ app.on("ready", () => {
             });
         }
     );*/
+
+    setInterval(() => {
+        const memoryUsage = process.memoryUsage()
+        console.log('Memory usage:', memoryUsage)
+      }, 5000)
 });
 
 app.on("window-all-closed", function() {
