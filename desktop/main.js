@@ -10,7 +10,7 @@ function createWindow() {
         width: 800,
         height: 600,
         icon: __dirname + '/images/logo.ico',
-        minWidth: 800,
+        /*minWidth: 800,*/
         minHeight: 550,
         webPreferences: {
             nodeIntegration: true,

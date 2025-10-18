@@ -79,7 +79,7 @@ body {
 
 /* songs list */
 
-#songs-list {
+#songs-list, #favourites-list {
     margin-top: 1.5rem;
 }
 
@@ -151,8 +151,8 @@ nav {
 }
 
 .song img {
-    width: 100px;
-    height: 100px;
+    width: 40px;
+    height: 40px;
 }
 
 .navbar .logo {
@@ -273,10 +273,16 @@ nav {
     font-weight: bold;
     margin-left: 10px;
     margin-top: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .artist-name {
     padding-bottom: 50px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .song-info {
@@ -297,7 +303,7 @@ nav {
 }
 
 .song {
-    height: 130px;
+    height: 65px;
     width: 30%;
     margin-right: 15px;
     margin-bottom: 15px;
@@ -328,10 +334,16 @@ nav {
     padding-bottom: 10px;
 }
 
+#song-info * {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 @media only screen and (min-width: 600px) and (max-width: 1200px) {
     .song {
-        height: 130px;
-        width: 48%;
+        height: 65px;
+        width: 47.55%;
     }
     /* #song-info {padding-left:700px;}
     #player-album-cover {padding-left:700px;} */
@@ -339,21 +351,15 @@ nav {
 
 @media only screen and (max-width: 600px) {
     .song {
-        height: 65px;
         width: 96%;
-    }
-    .song img {
-        width: 40px;
-        height: 40px;
-    }
-    .song .cover {
-        width: 40px;
-        height: 40px;
     }
     .song br {
         height: 0px;
     }
-    #custom-player {
+    #custom-player-container,#audio-player,#player-controls {
+        display: none;
+    }
+    /*#custom-player {
         height: 40px;
         position: absolute;
         top: 0;
@@ -364,16 +370,23 @@ nav {
     }
     #audio-player {
         margin-top: -50px;
+    }*/
+    #settings-button {
+        display: none;
+    }
+    #search-input {
+        width: calc(100% - 100px);
+    }
+    #custom-player {
+        width:100%;
     }
     #player-album-cover {
         margin-left: 10px;
-        margin-top: 60px;
-        width: 40px;
-        height: 40px;
     }
     #song-info {
-        margin-top: 60px;
-        margin-left: 60px;
+        padding-left:0px;
+        display: flex;
+        margin-left: 0px;
     }
 }
 
@@ -405,7 +418,7 @@ nav {
     background-color: #c0c0c0;
 }
 
-#page-title {
+#page-title, #favourites-title {
     margin-top: 90px;
     margin-left: 10px;
 }

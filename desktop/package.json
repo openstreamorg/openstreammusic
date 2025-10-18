@@ -31,12 +31,11 @@
         "electron": "^27.0.2",
         "electron-builder": "^23.6.0",
         "node-fetch": "^3.3.1",
-        "ytdl-core": "^4.11.5",
         "ytm-get-api": "^1.1.0"
     },
     "dependencies": {
         "node-fetch": "^3.3.1",
-        "ytm-get-api": "^1.1.0",
-        "ytdl-core": "^4.11.5"
+        "youtube-dl-exec": "^3.0.26",
+        "ytm-get-api": "^1.1.0"
     }
 }
